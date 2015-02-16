@@ -65,11 +65,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createModuleConcept(moduleName);
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
-                createModuleConcept("SCT");
-                createModuleConcept("SCT-US");
-                createModuleConcept("SCT-GB");
-                createModuleConcept("SCT-AU");
-                createModuleConcept("SCT-CA");
                 createModuleConcept("AMT");
                 createModuleConcept("VHA");
                 createModuleConcept("DOD");
@@ -170,8 +165,9 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("universal restriction");
                 createConcept("existential restriction");
             popParent();
+            createConcept("feature");
             createConcept("literal value");
-          pushParent(current());
+            pushParent(current());
                 createConcept("boolean literal");
                 createConcept("float literal");
                 createConcept("instant literal");
