@@ -62,7 +62,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
          pushParent(current());
             createConcept("module");
             pushParent(current());
-                createModuleConcept(moduleName);
+                createModuleConcept(moduleName).setComponentUuidNoRecompute(getUuid(moduleName));
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
                 createModuleConcept("AMT");
@@ -71,11 +71,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createModuleConcept("IPO");
                 createModuleConcept("SOLOR Overlay");
             popParent();
-            createConcept("user");
+            createConcept("user").setComponentUuidNoRecompute(TermAux.USER.getUuids()[0]);
             createConcept("path");
             pushParent(current());
                 ConceptCB developmentPath = createConcept("development");
                 ConceptCB masterPath = createConcept("master");
+                masterPath.setComponentUuidNoRecompute(TermAux.WB_AUX_PATH.getUuids()[0]);
             popParent();
             createConcept("set operator");
             pushParent(current());
@@ -130,8 +131,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             pushParent(current());
                 ConceptCB isa = createConcept("is-a");
                 isa.setComponentUuidNoRecompute(Snomed.IS_A.getUuids()[0]);
-                isa.addExtraUuid(UUID.fromString("46bccdc4-8fb6-11db-b606-0800200c9a66"), 
-                    GENERATED_UUID.getUuids()[0]); // Termaux is-a
+                isa.addExtraUuid(TermAux.IS_A.getUuids()[0], GENERATED_UUID.getUuids()[0]);
             popParent();
             createConcept("connective operator");
             pushParent(current());
