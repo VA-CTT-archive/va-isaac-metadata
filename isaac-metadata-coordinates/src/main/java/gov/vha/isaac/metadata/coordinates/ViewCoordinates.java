@@ -45,7 +45,7 @@ public class ViewCoordinates {
     }
 
 
-    public static ViewCoordinate getSnomedStatedLatest() throws IOException {
+    public static ViewCoordinate getDevelopmentStatedLatest() throws IOException {
         ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("a881b58e-b622-11e4-a71e-12e3f512a338"),
                 "development stated-latest", Ts.get().getMetadataVC());
         Position position
@@ -59,11 +59,68 @@ public class ViewCoordinates {
         return viewCoordinate;
     }
 
-    public static ViewCoordinate getSnomedStatedLatestActiveOnly() throws IOException {
+    public static ViewCoordinate getDevelopmentStatedLatestActiveOnly() throws IOException {
         ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("960eb68a-b623-11e4-a71e-12e3f512a338"),
                 "development stated-latest active-only", Ts.get().getMetadataVC());
         Position position
                 = Ts.get().newPosition(Ts.get().getPath(IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getLenient().getConceptNid()),
+                Long.MAX_VALUE);
+
+        viewCoordinate.setViewPosition(position);
+        viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
+        viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+
+        return viewCoordinate;
+    }
+//
+public static ViewCoordinate getMasterInferredLatest() throws IOException {
+    ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("58c9ae7a-b640-11e4-a71e-12e3f512a338"),
+            "development inferred-latest", Ts.get().getMetadataVC());
+    Position viewPosition
+            = Ts.get().newPosition(Ts.get().getPath(IsaacMetadataAuxiliaryBinding.MASTER.getLenient().getConceptNid()),
+            Long.MAX_VALUE);
+
+    viewCoordinate.setViewPosition(viewPosition);
+    viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
+    viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
+
+    return viewCoordinate;
+}
+
+    public static ViewCoordinate getMasterInferredLatestActiveOnly() throws IOException {
+        ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("58c9b2bc-b640-11e4-a71e-12e3f512a338"),
+                "development inferred-latest active-only", Ts.get().getMetadataVC());
+        Position position
+                = Ts.get().newPosition(Ts.get().getPath(IsaacMetadataAuxiliaryBinding.MASTER.getLenient().getConceptNid()),
+                Long.MAX_VALUE);
+
+        viewCoordinate.setViewPosition(position);
+        viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
+        viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+
+        return viewCoordinate;
+    }
+
+
+    public static ViewCoordinate getMasterStatedLatest() throws IOException {
+        ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("58c9b53c-b640-11e4-a71e-12e3f512a338"),
+                "development stated-latest", Ts.get().getMetadataVC());
+        Position position
+                = Ts.get().newPosition(Ts.get().getPath(IsaacMetadataAuxiliaryBinding.MASTER.getLenient().getConceptNid()),
+                Long.MAX_VALUE);
+
+        viewCoordinate.setViewPosition(position);
+        viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
+        viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
+
+        return viewCoordinate;
+    }
+
+    public static ViewCoordinate getMasterStatedLatestActiveOnly() throws IOException {
+        ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("58c9b7a8-b640-11e4-a71e-12e3f512a338"),
+                "development stated-latest active-only", Ts.get().getMetadataVC());
+        Position position
+                = Ts.get().newPosition(Ts.get().getPath(IsaacMetadataAuxiliaryBinding.MASTER.getLenient().getConceptNid()),
                 Long.MAX_VALUE);
 
         viewCoordinate.setViewPosition(position);
