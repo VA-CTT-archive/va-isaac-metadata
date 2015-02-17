@@ -2,12 +2,17 @@ package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import org.ihtsdo.otf.tcc.api.contradiction.ContradictionManagerBI;
+import org.ihtsdo.otf.tcc.api.contradiction.ContradictionManagerPolicy;
 import org.ihtsdo.otf.tcc.api.contradiction.strategy.IdentifyAllConflict;
 import org.ihtsdo.otf.tcc.api.coordinate.*;
+import org.ihtsdo.otf.tcc.api.metadata.binding.SnomedMetadataRf2;
+import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 import org.ihtsdo.otf.tcc.api.relationship.RelAssertionType;
+import org.ihtsdo.otf.tcc.api.spec.ConceptSpec;
 import org.ihtsdo.otf.tcc.api.store.Ts;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.UUID;
 
@@ -144,6 +149,31 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
                 RelAssertionType.INFERRED_THEN_STATED, null, LanguageSort.RF2_LANG_REFEX);
     }
 
-
+//
+//
+//    public static ViewCoordinate makeMetaViewCoordinate() throws IOException {
+//        Path viewPath = new Path();
+//        viewPath.setConceptSpec(TermAux.WB_AUX_PATH);
+//        Position viewPosition = new Position(Long.MAX_VALUE, viewPath);
+//        EnumSet<Status> allowedStatus = EnumSet.of(Status.ACTIVE);
+//        ContradictionManagerBI contradictionManager = new IdentifyAllConflict();
+//        ViewCoordinate vc = new ViewCoordinate();
+//        vc.setAllowedStatus(allowedStatus);
+//        vc.setClassifierSpec(TermAux.IHTSDO_CLASSIFIER);
+//        vc.setContradictionManager(contradictionManager);
+//        vc.setContradictionManagerPolicy(ContradictionManagerPolicy.IDENTIFY_ALL_CONFLICTS);
+//        vc.setLanguageSpec(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2);
+//        ArrayList<ConceptSpec> langPrefConceptSpecList = new ArrayList<>();
+//        langPrefConceptSpecList.add(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2);
+//        langPrefConceptSpecList.add(SnomedMetadataRf2.GB_ENGLISH_REFSET_RF2);
+//        vc.setLanguagePreferenceList(new LanguagePreferenceList(langPrefConceptSpecList));
+//        vc.setLanguageSort(LanguageSort.RF2_LANG_REFEX);
+//        vc.setName("meta-vc");
+//        vc.setPrecedence(Precedence.PATH);
+//        vc.setRelationshipAssertionType(RelAssertionType.INFERRED_THEN_STATED);
+//        vc.setVcUuid(UUID.fromString("014ae770-b32a-11e1-afa6-0800200c9a66"));
+//        vc.setViewPosition(viewPosition);
+//        return vc;
+//    }
 
 }
