@@ -30,7 +30,7 @@ public class EditCoordinates {
         return editCoordinate;
     }
 
-    public static EditCoordinate getDefaultUserWorkbenchAux() throws IOException {
+    public static EditCoordinate getDefaultUserMetadata() throws IOException {
 
         EditCoordinate editCoordinate = new EditCoordinate(IsaacMetadataAuxiliaryBinding.USER.getLenient().getNid(),
                 IsaacMetadataAuxiliaryBinding.ISAAC_METADATA_MODULE.getLenient().getNid(),
