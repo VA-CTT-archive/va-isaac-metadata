@@ -83,7 +83,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("sufficient set");
                 createConcept("necessary set");
             popParent();
-            createConcept("assemblage");
+            createConcept("assemblage membership type");
+            pushParent(current());
+                createConcept("normal member").setComponentUuidNoRecompute(UUID.fromString("cc624429-b17d-4ac5-a69e-0b32448aaf3c"));
+                createConcept("marked parent").setComponentUuidNoRecompute(UUID.fromString("125f3d04-de17-490e-afec-1431c2a39e29"));
+            popParent();
+            createConcept("assemblage").setComponentUuidNoRecompute(UUID.fromString("3e0cd740-2cc6-3d68-ace7-bad2eb2621da"));
             pushParent(current());
                 createConcept("dialect assemblage");
                 pushParent(current());
@@ -189,6 +194,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             popParent();
             createConcept("description-logic classifier");
             pushParent(current());
+                createConcept("IHTSDO classifier").setComponentUuidNoRecompute(UUID.fromString("7e87cc5b-e85f-3860-99eb-7a44f2b9e6f9"));
                 createConcept("SnoRocket");
                 createConcept("ConDOR");
             popParent();

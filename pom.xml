@@ -7,11 +7,11 @@
         <version>1.3</version>
     </parent>
     <artifactId>isaac-metatada</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}: (MMP) </name>
     <properties>
-        <ochre.version>2.7</ochre.version>
+        <ochre.version>2.8</ochre.version>
     </properties>
     <dependencyManagement>
         <dependencies>
