@@ -106,7 +106,18 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
-                
+
+          //
+            createConcept("axiom origin");
+                pushParent(current());
+                ConceptCB stated = createConcept("stated");
+                stated.setComponentUuidNoRecompute(SnomedMetadataRf2.STATED_RELATIONSHIP_RF2.getUuids()[0]);
+                stated.addExtraUuid(TermAux.REL_STATED_CHAR.getUuids()[0], GENERATED_UUID.getUuids()[0]);
+                ConceptCB inferred = createConcept("inferred");
+                inferred.setComponentUuidNoRecompute(SnomedMetadataRf2.INFERRED_RELATIONSHIP_RF2.getUuids()[0]);
+                inferred.addExtraUuid(TermAux.REL_INFERED_CHAR.getUuids()[0], GENERATED_UUID.getUuids()[0]);
+            popParent();
+          //
          //
             createConcept("logic assemblage");
             pushParent(current());
