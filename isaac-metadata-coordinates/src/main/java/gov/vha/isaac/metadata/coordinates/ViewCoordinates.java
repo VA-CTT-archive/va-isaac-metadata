@@ -31,7 +31,10 @@ public class ViewCoordinates {
         viewCoordinate.setViewPosition(viewPosition);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
-
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
         return viewCoordinate;
     }
 
@@ -45,6 +48,10 @@ public class ViewCoordinates {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -60,6 +67,10 @@ public class ViewCoordinates {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -74,6 +85,10 @@ public class ViewCoordinates {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -88,6 +103,10 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
     viewCoordinate.setViewPosition(viewPosition);
     viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
     viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
+    viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+    viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+    viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+    viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
     return viewCoordinate;
 }
@@ -102,6 +121,10 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.INFERRED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -117,6 +140,10 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE, Status.INACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -131,6 +158,10 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setViewPosition(position);
         viewCoordinate.setRelationshipAssertionType(RelAssertionType.STATED);
         viewCoordinate.setAllowedStatus(EnumSet.of(Status.ACTIVE));
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
 
         return viewCoordinate;
     }
@@ -143,10 +174,14 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         ContradictionManagerBI contradictionManager = new IdentifyAllConflict();
         int languageNid = IsaacMetadataAuxiliaryBinding.US_ENGLISH.getLenient().getConceptNid();
         int classifierNid = IsaacMetadataAuxiliaryBinding.SNOROCKET.getLenient().getNid();
-
-        return new ViewCoordinate(UUID.fromString("cec309be-b622-11e4-a71e-12e3f512a338"), "meta-vc", Precedence.PATH,
+        ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("cec309be-b622-11e4-a71e-12e3f512a338"), "meta-vc", Precedence.PATH,
                 viewPosition, allowedStatusNids, contradictionManager, languageNid, classifierNid,
                 RelAssertionType.INFERRED_THEN_STATED, null, LanguageSort.RF2_LANG_REFEX);
+        viewCoordinate.setDescriptionLogicProfileSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS);
+        viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
+        viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
+        viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        return viewCoordinate;
     }
 
 //
