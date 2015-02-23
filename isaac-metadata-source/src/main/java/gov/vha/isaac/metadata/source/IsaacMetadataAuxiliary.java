@@ -198,7 +198,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("less than or equal to");
                 createConcept("less than");
             popParent();
-            createConcept("description-logic variety");
+            createConcept("description-logic profile");
             pushParent(current());
                 createConcept("EL++");
                 createConcept("SH");
