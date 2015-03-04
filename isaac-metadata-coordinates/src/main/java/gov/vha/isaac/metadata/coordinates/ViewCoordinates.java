@@ -2,17 +2,12 @@ package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import org.ihtsdo.otf.tcc.api.contradiction.ContradictionManagerBI;
-import org.ihtsdo.otf.tcc.api.contradiction.ContradictionManagerPolicy;
 import org.ihtsdo.otf.tcc.api.contradiction.strategy.IdentifyAllConflict;
 import org.ihtsdo.otf.tcc.api.coordinate.*;
-import org.ihtsdo.otf.tcc.api.metadata.binding.SnomedMetadataRf2;
-import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 import org.ihtsdo.otf.tcc.api.relationship.RelAssertionType;
-import org.ihtsdo.otf.tcc.api.spec.ConceptSpec;
 import org.ihtsdo.otf.tcc.api.store.Ts;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.UUID;
 
@@ -35,6 +30,11 @@ public class ViewCoordinates {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getDescriptionTypePrefSpecs().add(IsaacMetadataAuxiliaryBinding.SYNONYM);
+        viewCoordinate.getDescriptionTypePrefSpecs().add(IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
         return viewCoordinate;
     }
 
@@ -52,6 +52,9 @@ public class ViewCoordinates {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -71,6 +74,9 @@ public class ViewCoordinates {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -89,6 +95,9 @@ public class ViewCoordinates {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -107,6 +116,9 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
     viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
     viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
     viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
     return viewCoordinate;
 }
@@ -125,6 +137,9 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -144,6 +159,9 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -162,6 +180,9 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
 
         return viewCoordinate;
     }
@@ -172,7 +193,7 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         Position viewPosition = new Position(Long.MAX_VALUE, viewPath);
         EnumSet<Status> allowedStatusNids = EnumSet.of(Status.ACTIVE);
         ContradictionManagerBI contradictionManager = new IdentifyAllConflict();
-        int languageNid = IsaacMetadataAuxiliaryBinding.US_ENGLISH.getLenient().getConceptNid();
+        int languageNid = IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getLenient().getConceptNid();
         int classifierNid = IsaacMetadataAuxiliaryBinding.SNOROCKET.getLenient().getNid();
         ViewCoordinate viewCoordinate = new ViewCoordinate(UUID.fromString("cec309be-b622-11e4-a71e-12e3f512a338"), "meta-vc", Precedence.PATH,
                 viewPosition, allowedStatusNids, contradictionManager, languageNid, classifierNid,
@@ -181,34 +202,9 @@ public static ViewCoordinate getMasterInferredLatest() throws IOException {
         viewCoordinate.setStatedAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM);
         viewCoordinate.setInferredAssemblageSpec(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM);
         viewCoordinate.setClassifierSpec(IsaacMetadataAuxiliaryBinding.SNOROCKET);
+        viewCoordinate.getLangPrefSpecs().clear();
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+        viewCoordinate.getLangPrefSpecs().add(IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT);
         return viewCoordinate;
     }
-
-//
-//
-//    public static ViewCoordinate makeMetaViewCoordinate() throws IOException {
-//        Path viewPath = new Path();
-//        viewPath.setConceptSpec(TermAux.WB_AUX_PATH);
-//        Position viewPosition = new Position(Long.MAX_VALUE, viewPath);
-//        EnumSet<Status> allowedStatus = EnumSet.of(Status.ACTIVE);
-//        ContradictionManagerBI contradictionManager = new IdentifyAllConflict();
-//        ViewCoordinate vc = new ViewCoordinate();
-//        vc.setAllowedStatus(allowedStatus);
-//        vc.setClassifierSpec(TermAux.IHTSDO_CLASSIFIER);
-//        vc.setContradictionManager(contradictionManager);
-//        vc.setContradictionManagerPolicy(ContradictionManagerPolicy.IDENTIFY_ALL_CONFLICTS);
-//        vc.setLanguageSpec(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2);
-//        ArrayList<ConceptSpec> langPrefConceptSpecList = new ArrayList<>();
-//        langPrefConceptSpecList.add(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2);
-//        langPrefConceptSpecList.add(SnomedMetadataRf2.GB_ENGLISH_REFSET_RF2);
-//        vc.setLanguagePreferenceList(new LanguagePreferenceList(langPrefConceptSpecList));
-//        vc.setLanguageSort(LanguageSort.RF2_LANG_REFEX);
-//        vc.setName("meta-vc");
-//        vc.setPrecedence(Precedence.PATH);
-//        vc.setRelationshipAssertionType(RelAssertionType.INFERRED_THEN_STATED);
-//        vc.setVcUuid(UUID.fromString("014ae770-b32a-11e1-afa6-0800200c9a66"));
-//        vc.setViewPosition(viewPosition);
-//        return vc;
-//    }
-
 }
