@@ -72,7 +72,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createModuleConcept("SOLOR Overlay");
             popParent();
             createConcept("user").setComponentUuidNoRecompute(TermAux.USER.getUuids()[0]);
-            createConcept("path");
+            ConceptCB path = createConcept("path");
+            path.addExtraUuid(UUID.fromString("4459d8cf-5a6f-3952-9458-6d64324b27b7"), GENERATED_UUID.getUuids()[0]);
             pushParent(current());
                 ConceptCB developmentPath = createConcept("development");
                 ConceptCB masterPath = createConcept("master");
@@ -82,6 +83,11 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             pushParent(current());
                 createConcept("sufficient set");
                 createConcept("necessary set");
+            popParent();
+            createConcept("identifier source");
+            pushParent(current());
+                createConcept("SNOMED integer id").setComponentUuid(UUID.fromString("0418a591-f75b-39ad-be2c-3ab849326da9"));     
+                createConcept("generated UUID").setComponentUuid(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
             popParent();
             createConcept("language");
             pushParent(current());
