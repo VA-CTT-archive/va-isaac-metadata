@@ -86,8 +86,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             popParent();
             createConcept("identifier source");
             pushParent(current());
-                createConcept("SNOMED integer id").setComponentUuid(UUID.fromString("0418a591-f75b-39ad-be2c-3ab849326da9"));     
-                createConcept("generated UUID").setComponentUuid(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
+                createConcept("SNOMED integer id").setComponentUuidNoRecompute(UUID.fromString("0418a591-f75b-39ad-be2c-3ab849326da9"));     
+                createConcept("generated UUID").setComponentUuidNoRecompute(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
             popParent();
             createConcept("language");
             pushParent(current());
