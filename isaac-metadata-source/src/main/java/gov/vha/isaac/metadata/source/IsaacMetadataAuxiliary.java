@@ -72,8 +72,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createModuleConcept("SOLOR Overlay");
             popParent();
             createConcept("user").setComponentUuidNoRecompute(TermAux.USER.getUuids()[0]);
-            ConceptCB path = createConcept("path");
-            path.addExtraUuid(UUID.fromString("4459d8cf-5a6f-3952-9458-6d64324b27b7"), GENERATED_UUID.getUuids()[0]);
+            createConcept("path").setComponentUuidNoRecompute(UUID.fromString("4459d8cf-5a6f-3952-9458-6d64324b27b7"));
             pushParent(current());
                 ConceptCB developmentPath = createConcept("development");
                 ConceptCB masterPath = createConcept("master");
