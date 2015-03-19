@@ -200,6 +200,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("existential restriction");
             popParent();
             createConcept("feature");
+            createConcept("role").setComponentUuidNoRecompute(UUID.fromString("6155818b-09ed-388e-82ce-caa143423e99"));
             createConcept("literal value");
             pushParent(current());
                 createConcept("boolean literal");
