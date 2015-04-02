@@ -2,7 +2,7 @@
     <parent>
         <artifactId>isaac-metatada</artifactId>
         <groupId>gov.vha.isaac</groupId>
-        <version>1.20</version>
+        <version>1.21</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,6 +20,11 @@
             <groupId>gov.vha.isaac</groupId>
             <artifactId>isaac-metadata-artifacts</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.vha.isaac</groupId>
+            <artifactId>ochre-model</artifactId>
+            <version>${ochre.version}</version>
         </dependency>
     </dependencies>
 </project>
