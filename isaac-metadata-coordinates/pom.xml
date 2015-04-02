@@ -21,5 +21,10 @@
             <artifactId>isaac-metadata-artifacts</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>gov.vha.isaac</groupId>
+            <artifactId>ochre-model</artifactId>
+            <version>${ochre.version}</version>
+        </dependency>
     </dependencies>
 </project>
