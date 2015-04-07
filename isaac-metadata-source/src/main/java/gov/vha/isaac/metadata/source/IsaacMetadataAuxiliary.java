@@ -231,6 +231,11 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             createConcept("intrinsic role");
                 pushParent(current());
                 createConcept("role group");
+            createConcept("unmodeled concept");
+                pushParent(current());
+                createConcept("unmodeled role concept");
+                createConcept("unmodeled feature concept");
+                createConcept("unmodeled taxonomic concept");
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
