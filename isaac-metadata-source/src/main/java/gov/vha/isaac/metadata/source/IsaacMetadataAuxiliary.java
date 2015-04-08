@@ -9,6 +9,7 @@ package gov.vha.isaac.metadata.source;
 //~--- non-JDK imports --------------------------------------------------------
 
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
+import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
 import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -58,7 +59,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
       super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC Metadata)", LanguageCode.EN);
 
       try {
-         createConcept("ISAAC-metadata auxiliary");
+         createConcept("SOLOR Root");
          pushParent(current());
             createConcept("module");
             pushParent(current());
@@ -122,7 +123,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     
                     ConceptCB pathOrigins = createConcept("path origins");
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
-                    addPathOrigin(pathOrigins, developmentPath, masterPath);
+                    //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
 
           //
@@ -228,14 +229,21 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("SnoRocket");
                 createConcept("ConDOR");
             popParent();
-            createConcept("intrinsic role");
+            createConcept("logical role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
                 pushParent(current());
-                createConcept("role group");
+                createConcept("intrinsic role");
+                    pushParent(current());
+                    createConcept("role group");
+                    popParent();
+                popParent();
             createConcept("unmodeled concept");
                 pushParent(current());
                 createConcept("unmodeled role concept");
                 createConcept("unmodeled feature concept");
                 createConcept("unmodeled taxonomic concept");
+            popParent();
+            createConcept("health concept").setComponentUuidNoRecompute(Taxonomies.SNOMED.getUuids()[0]);
+
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
