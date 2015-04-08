@@ -9,7 +9,7 @@
   <fileSets>
     <fileSet>
       <directory>${project.build.directory}/generated-resources</directory>
-      <outputDirectory>/isaac/metadata/xml</outputDirectory>
+      <outputDirectory>isaac/metadata/xml</outputDirectory>
       <includes>
         <include>IsaacMetadataAuxiliary.xml</include>
       </includes>

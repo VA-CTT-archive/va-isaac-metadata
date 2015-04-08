@@ -10,7 +10,7 @@
   <fileSets>
     <fileSet>
       <directory>${project.build.directory}/generated-resources</directory>
-      <outputDirectory>/isaac/metadata/econ</outputDirectory>
+      <outputDirectory>isaac/metadata/econ</outputDirectory>
       <includes>
         <include>IsaacMetadataAuxiliary.econ</include>
       </includes>
