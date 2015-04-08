@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>gov.vha.isaac</groupId>
-        <artifactId>isaac-metatada</artifactId>
+        <groupId>gov.vha.isaac.isaac-metadata</groupId>
+        <artifactId>isaac-metadata-parent</artifactId>
         <version>1.23-SNAPSHOT</version>
     </parent>
+    
+    <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
     <artifactId>isaac-metadata-artifacts</artifactId>
     <name>${project.parent.artifactId}: ${project.artifactId}</name>
     <packaging>jar</packaging>
+    
     <dependencies>
         <dependency>
-            <groupId>gov.vha.isaac</groupId>
-            <artifactId>tcc-api</artifactId>        
+            <groupId>gov.vha.isaac.ochre.modules</groupId>
+            <artifactId>tcc-api</artifactId>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
-                <groupId>gov.vha.isaac</groupId>
+                <groupId>gov.vha.isaac.ochre.modules</groupId>
                 <artifactId>ochre-mojo</artifactId>
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>isaac-metadata-source</artifactId>
-                        <version>${project.version}</version> 
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -43,7 +48,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
@@ -57,7 +61,7 @@
                             </sources>
                         </configuration>
                     </execution>
-                   <execution>
+                    <execution>
                         <id>attach-artifacts</id>
                         <goals>
                             <goal>attach-artifact</goal>
@@ -78,11 +82,10 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>       
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -91,11 +94,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>     
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/main/assembly/econ-all.xml</descriptor>
@@ -113,6 +115,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>     
+            </plugin>
         </plugins>
-    </build></project>
+    </build>
+</project>
