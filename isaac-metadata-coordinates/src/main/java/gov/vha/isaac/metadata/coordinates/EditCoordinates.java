@@ -50,7 +50,7 @@ public class EditCoordinates {
 
         EditCoordinate editCoordinate = new EditCoordinateImpl(
                 getNid(IsaacMetadataAuxiliaryBinding.USER),
-                getNid(IsaacMetadataAuxiliaryBinding.ISAAC_METADATA_MODULE),
+                getNid(IsaacMetadataAuxiliaryBinding.ISAAC_MODULE),
                 getNid(IsaacMetadataAuxiliaryBinding.DEVELOPMENT));
 
         return editCoordinate;
