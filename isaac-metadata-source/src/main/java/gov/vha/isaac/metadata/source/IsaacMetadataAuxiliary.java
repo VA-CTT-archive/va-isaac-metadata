@@ -53,13 +53,13 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
 
 
    /** Field description */
-   private static final String moduleName = "ISAAC Metadata Module";
+   private static final String moduleName = "ISAAC Module";
 
    public IsaacMetadataAuxiliary() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-      super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC Metadata)", LanguageCode.EN);
+      super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC)", LanguageCode.EN);
 
       try {
-         createConcept("SOLOR Root");
+         createConcept("ISAAC root");
          pushParent(current());
             createConcept("module");
             pushParent(current());
@@ -125,7 +125,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
-
+          popParent();
           //
             createConcept("axiom origin");
                 pushParent(current());
