@@ -16,7 +16,7 @@
     <name>${project.artifactId}: (MMP) </name>
 
     <properties>
-        <ochre.version>2.24-SNAPSHOT</ochre.version>
+        <ochre.version>2.25-SNAPSHOT</ochre.version>
     </properties>
 
     <dependencyManagement>
