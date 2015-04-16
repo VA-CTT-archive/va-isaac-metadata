@@ -5,7 +5,7 @@
     <parent>
         <groupId>gov.vha.isaac</groupId>
         <artifactId>isaac-parent</artifactId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.4</version>
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
@@ -14,7 +14,7 @@
     <name>${project.artifactId}: (MMP) </name>
 
     <properties>
-        <ochre.version>2.25-SNAPSHOT</ochre.version>
+        <ochre.version>2.25</ochre.version>
     </properties>
 
     <dependencyManagement>
