@@ -1,28 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>isaac-metatada</artifactId>
-        <groupId>gov.vha.isaac</groupId>
-        <version>1.22</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>gov.vha.isaac.isaac-metadata</groupId>
+        <artifactId>isaac-metadata-parent</artifactId>
+        <version>1.27</version>
+    </parent>
 
+    <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
     <artifactId>isaac-metadata-coordinates</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.parent.artifactId}: ${project.artifactId}</name>
-    <url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
         <dependency>
-            <groupId>gov.vha.isaac</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>isaac-metadata-artifacts</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>gov.vha.isaac</groupId>
+            <groupId>gov.vha.isaac.ochre.modules</groupId>
             <artifactId>ochre-model</artifactId>
             <version>${ochre.version}</version>
         </dependency>
