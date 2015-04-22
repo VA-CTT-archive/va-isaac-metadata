@@ -8,7 +8,7 @@
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
-    <version>1.29-SNAPSHOT</version>
+    <version>1.28</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}: (MMP) </name>
 
