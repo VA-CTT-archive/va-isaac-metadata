@@ -4,16 +4,16 @@
     <parent>
         <groupId>gov.vha.isaac</groupId>
         <artifactId>isaac-parent</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
-    <version>1.27</version>
+    <version>1.28</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}: (MMP) </name>
 
     <properties>
-        <ochre.version>2.25</ochre.version>
+        <ochre.version>2.26</ochre.version>
     </properties>
 
     <dependencyManagement>
@@ -44,6 +44,14 @@
                     <groupId>gov.vha.isaac.ochre.modules</groupId>
                     <artifactId>ochre-mojo</artifactId>
                     <version>${ochre.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-simple</artifactId>
+                            <version>${slf4j.version}</version>
+                            <optional>true</optional>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
