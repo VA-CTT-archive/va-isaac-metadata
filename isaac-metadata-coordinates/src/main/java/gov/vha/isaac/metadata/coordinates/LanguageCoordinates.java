@@ -83,4 +83,66 @@ public class LanguageCoordinates {
                 dialectAssemblagePreferenceList, descriptionTypePreferenceList);
     }
     
+    public static int iso639toConceptNid(String iso639text) {
+        switch (iso639text.toLowerCase()) {
+            case "en":
+                return IsaacMetadataAuxiliaryBinding.ENGLISH.getNid();
+            case "es":
+                return IsaacMetadataAuxiliaryBinding.SPANISH.getNid();
+            case "fr": 
+                return IsaacMetadataAuxiliaryBinding.FRENCH.getNid();
+            case "da":
+                return IsaacMetadataAuxiliaryBinding.DANISH.getNid();
+            case "pl":
+                return IsaacMetadataAuxiliaryBinding.POLISH.getNid();
+            case "nl":
+                return IsaacMetadataAuxiliaryBinding.DUTCH.getNid();
+            case "lt":
+                return IsaacMetadataAuxiliaryBinding.LITHUANIAN.getNid();
+            case "zh":
+                return IsaacMetadataAuxiliaryBinding.CHINESE.getNid();
+            case "ja":
+                return IsaacMetadataAuxiliaryBinding.JAPANESE.getNid();
+            case "sv":
+                return IsaacMetadataAuxiliaryBinding.SWEDISH.getNid();
+            default: 
+                throw new UnsupportedOperationException("Can't handle: " + iso639text);
+        }
+    }
+    
+    public static String conceptNidToIso639(int nid) {
+            if (IsaacMetadataAuxiliaryBinding.ENGLISH.getNid() == nid) {
+                return "en";
+            }
+            if (IsaacMetadataAuxiliaryBinding.SPANISH.getNid() == nid) {
+                return "es";
+            }
+            if (IsaacMetadataAuxiliaryBinding.FRENCH.getNid() == nid) {
+                return "fr";
+            }
+            if (IsaacMetadataAuxiliaryBinding.DANISH.getNid() == nid) {
+                return "da";
+            }
+            if (IsaacMetadataAuxiliaryBinding.POLISH.getNid() == nid) {
+                return "pl";
+            }
+            if (IsaacMetadataAuxiliaryBinding.DUTCH.getNid() == nid) {
+                return "nl";
+            }
+            if (IsaacMetadataAuxiliaryBinding.LITHUANIAN.getNid() == nid) {
+                return "lt";
+            }
+            if (IsaacMetadataAuxiliaryBinding.CHINESE.getNid() == nid) {
+                return "zh";
+            }
+            if (IsaacMetadataAuxiliaryBinding.JAPANESE.getNid() == nid) {
+                return "ja";
+            }
+            if (IsaacMetadataAuxiliaryBinding.SWEDISH.getNid() == nid) {
+                return "sv";
+            }
+            throw new UnsupportedOperationException("Can't handle: " + nid);
+    }
+    
+    
 }
