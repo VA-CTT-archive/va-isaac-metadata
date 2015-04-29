@@ -9,6 +9,7 @@ package gov.vha.isaac.metadata.source;
 //~--- non-JDK imports --------------------------------------------------------
 
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
+import org.ihtsdo.otf.tcc.api.metadata.binding.RefexDynamic;
 import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
 import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
@@ -16,10 +17,8 @@ import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.ihtsdo.otf.tcc.api.blueprint.ComponentProperty;
@@ -53,7 +52,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
 
 
    /** Field description */
-   private static final String moduleName = "ISAAC Module";
+   private static final String moduleName = TermAux.ISAAC_MODULE.getDescription();
 
    public IsaacMetadataAuxiliary() throws NoSuchAlgorithmException, UnsupportedEncodingException {
       super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC)", LanguageCode.EN);
@@ -63,7 +62,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
          pushParent(current());
             createConcept("module");
             pushParent(current());
-                createModuleConcept(moduleName).setComponentUuidNoRecompute(getUuid(moduleName));
+                createModuleConcept(moduleName).setComponentUuidNoRecompute(TermAux.ISAAC_MODULE.getPrimodialUuid());
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
                 createModuleConcept("AMT");
@@ -125,6 +124,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
+                createConcept(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getPrimodialUuid());
+                pushParent(current());
+                    createConcept("description source type reference sets");  //Dynamic Sememes are created under this node for LOINC and RxNorm description types
+                    createConcept("relationship source type reference sets"); //Dynamic Sememes are created under this node for LOINC and RxNorm relationship types
+                popParent();
+                createConcept(RefexDynamic.DYNAMIC_SEMEME_METADATA.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_METADATA.getPrimodialUuid());
           popParent();
           //
             createConcept("axiom origin");
@@ -156,11 +161,14 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     GENERATED_UUID.getUuids()[0]);
                 createConcept("definition").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
+            createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
             createConcept("description acceptability");
             pushParent(current());
                 createConcept("acceptable").setComponentUuidNoRecompute(SnomedMetadataRf2.ACCEPTABLE_RF2.getUuids()[0]);
                 createConcept("preferred").setComponentUuidNoRecompute(SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
             popParent();
+            
+            createConcept("relationship type in source terminology");  //LOINC and RxNorm relationship types are created under this node
          
             createConcept("taxonomy operator");
             pushParent(current());
