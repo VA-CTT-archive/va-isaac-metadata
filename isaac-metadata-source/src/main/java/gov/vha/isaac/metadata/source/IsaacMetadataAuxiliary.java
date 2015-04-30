@@ -8,6 +8,8 @@ package gov.vha.isaac.metadata.source;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
 import org.ihtsdo.otf.tcc.api.metadata.binding.RefexDynamic;
 import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
@@ -113,6 +115,11 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept("US English dialect").setComponentUuidNoRecompute(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2.getUuids()[0]);
                     createConcept("GB English dialect").setComponentUuidNoRecompute(SnomedMetadataRf2.GB_ENGLISH_REFSET_RF2.getUuids()[0]);
                 popParent();
+                createConcept("logic assemblage");
+                    pushParent(current());
+                    createConcept("EL++ stated form");
+                    createConcept("EL++ inferred form");
+                popParent();
                 createConcept("path assemblage");
                 pushParent(current());
                     ConceptCB paths = createConcept("paths");
@@ -143,11 +150,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             popParent();
           //
          //
-            createConcept("logic assemblage");
-            pushParent(current());
-                createConcept("EL++ stated form");
-                createConcept("EL++ inferred form");
-            popParent();
          //
             createConcept("description type");
             pushParent(current());
@@ -209,7 +211,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("existential restriction");
             popParent();
             createConcept("feature");
-            createConcept("role").setComponentUuidNoRecompute(UUID.fromString("6155818b-09ed-388e-82ce-caa143423e99"));
             createConcept("literal value");
             pushParent(current());
                 createConcept("boolean literal");
@@ -237,13 +238,13 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("SnoRocket");
                 createConcept("ConDOR");
             popParent();
-            createConcept("logical role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
-                pushParent(current());
+            createConcept("role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
+            pushParent(current());
                 createConcept("intrinsic role");
-                    pushParent(current());
+                pushParent(current());
                     createConcept("role group");
-                    popParent();
                 popParent();
+            popParent();
             createConcept("unmodeled concept");
                 pushParent(current());
                 createConcept("unmodeled role concept");
@@ -271,5 +272,16 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 path.getComponentUuid(), paths.getComponentUuid(),
                 IdDirective.GENERATE_HASH, RefexDirective.INCLUDE));
     }
-
+    public static void main(String[] args) {
+        try {
+            IsaacMetadataAuxiliary aux = new IsaacMetadataAuxiliary();
+            aux.exportEConcept(new DataOutputStream(new ByteArrayOutputStream(10240)));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
