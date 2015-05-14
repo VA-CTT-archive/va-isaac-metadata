@@ -57,5 +57,6 @@
         <module>isaac-metadata-source</module>
         <module>isaac-metadata-artifacts</module>
         <module>isaac-metadata-coordinates</module>
-    </modules>
+    <module>isaac-observables-with-metadata</module>
+  </modules>
 </project>
