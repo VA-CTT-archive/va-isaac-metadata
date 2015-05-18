@@ -7,18 +7,12 @@
         <artifactId>isaac-metadata-parent</artifactId>
         <version>1.29-SNAPSHOT</version>
     </parent>
+    
+    <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
     <artifactId>isaac-observables-with-metadata</artifactId>
     <name>${project.parent.artifactId}: ${project.artifactId}</name>
-    <url>http://maven.apache.org</url>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
             <artifactId>isaac-metadata-artifacts</artifactId>

@@ -24,7 +24,7 @@
         <dependencies>
             <dependency>
                 <groupId>gov.vha.isaac.ochre.modules</groupId>
-                <artifactId>tcc-api</artifactId>        
+                <artifactId>tcc-api</artifactId>
                 <version>${ochre.version}</version>
                 <type>jar</type>
                 <scope>compile</scope>
@@ -57,6 +57,6 @@
         <module>isaac-metadata-source</module>
         <module>isaac-metadata-artifacts</module>
         <module>isaac-metadata-coordinates</module>
-    <module>isaac-observables-with-metadata</module>
-  </modules>
+        <module>isaac-observables-with-metadata</module>
+    </modules>
 </project>
