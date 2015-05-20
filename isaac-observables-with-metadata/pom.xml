@@ -4,7 +4,7 @@
     <parent>
         <groupId>gov.vha.isaac.isaac-metadata</groupId>
         <artifactId>isaac-metadata-parent</artifactId>
-        <version>1.29-SNAPSHOT</version>
+        <version>1.29</version>
     </parent>
     
     <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
