@@ -8,7 +8,10 @@ package gov.vha.isaac.metadata.source;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
+import org.ihtsdo.otf.tcc.api.metadata.binding.RefexDynamic;
 import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
 import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
@@ -16,10 +19,8 @@ import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.ihtsdo.otf.tcc.api.blueprint.ComponentProperty;
@@ -53,7 +54,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
 
 
    /** Field description */
-   private static final String moduleName = "ISAAC Module";
+   private static final String moduleName = TermAux.ISAAC_MODULE.getDescription();
 
    public IsaacMetadataAuxiliary() throws NoSuchAlgorithmException, UnsupportedEncodingException {
       super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC)", LanguageCode.EN);
@@ -63,7 +64,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
          pushParent(current());
             createConcept("module");
             pushParent(current());
-                createModuleConcept(moduleName).setComponentUuidNoRecompute(getUuid(moduleName));
+                createModuleConcept(moduleName).setComponentUuidNoRecompute(TermAux.ISAAC_MODULE.getPrimodialUuid());
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
                 createModuleConcept("AMT");
@@ -114,6 +115,11 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept("US English dialect").setComponentUuidNoRecompute(SnomedMetadataRf2.US_ENGLISH_REFSET_RF2.getUuids()[0]);
                     createConcept("GB English dialect").setComponentUuidNoRecompute(SnomedMetadataRf2.GB_ENGLISH_REFSET_RF2.getUuids()[0]);
                 popParent();
+                createConcept("logic assemblage");
+                    pushParent(current());
+                    createConcept("EL++ stated form");
+                    createConcept("EL++ inferred form");
+                popParent();
                 createConcept("path assemblage");
                 pushParent(current());
                     ConceptCB paths = createConcept("paths");
@@ -125,6 +131,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
+                createConcept(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getPrimodialUuid());
+                pushParent(current());
+                    createConcept("description source type reference sets");  //Dynamic Sememes are created under this node for LOINC and RxNorm description types
+                    createConcept("relationship source type reference sets"); //Dynamic Sememes are created under this node for LOINC and RxNorm relationship types
+                popParent();
+                createConcept(RefexDynamic.DYNAMIC_SEMEME_METADATA.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_METADATA.getPrimodialUuid());
           popParent();
           //
             createConcept("axiom origin");
@@ -138,11 +150,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             popParent();
           //
          //
-            createConcept("logic assemblage");
-            pushParent(current());
-                createConcept("EL++ stated form");
-                createConcept("EL++ inferred form");
-            popParent();
          //
             createConcept("description type");
             pushParent(current());
@@ -156,11 +163,14 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     GENERATED_UUID.getUuids()[0]);
                 createConcept("definition").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
+            createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
             createConcept("description acceptability");
             pushParent(current());
                 createConcept("acceptable").setComponentUuidNoRecompute(SnomedMetadataRf2.ACCEPTABLE_RF2.getUuids()[0]);
                 createConcept("preferred").setComponentUuidNoRecompute(SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
             popParent();
+            
+            createConcept("relationship type in source terminology");  //LOINC and RxNorm relationship types are created under this node
          
             createConcept("taxonomy operator");
             pushParent(current());
@@ -201,7 +211,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("existential restriction");
             popParent();
             createConcept("feature");
-            createConcept("role").setComponentUuidNoRecompute(UUID.fromString("6155818b-09ed-388e-82ce-caa143423e99"));
             createConcept("literal value");
             pushParent(current());
                 createConcept("boolean literal");
@@ -229,21 +238,73 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("SnoRocket");
                 createConcept("ConDOR");
             popParent();
-            createConcept("logical role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
-                pushParent(current());
+            createConcept("role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
+            pushParent(current());
                 createConcept("intrinsic role");
-                    pushParent(current());
-                    createConcept("role group");
-                    popParent();
-                popParent();
-            createConcept("unmodeled concept");
                 pushParent(current());
+                    createConcept("role group");
+                popParent();
+            popParent();
+            createConcept("unmodeled concept");
+            pushParent(current());
                 createConcept("unmodeled role concept");
                 createConcept("unmodeled feature concept");
                 createConcept("unmodeled taxonomic concept");
             popParent();
             createConcept("health concept").setComponentUuidNoRecompute(Taxonomies.SNOMED.getUuids()[0]);
-
+            createConcept("object properties");
+            pushParent(current());
+                createConcept("coordinate properties");
+                pushParent(current());
+                    createConcept("author sequence for edit coordinate");
+                    createConcept("module sequence for edit coordinate");
+                    createConcept("path sequence for edit cordinate");
+                    createConcept("language sequence for language coordinate");
+                    createConcept("dialect assemblage sequence preference list for language coordinate");
+                    createConcept("description type sequence preference list for language coordinate");
+                    createConcept("stated assemblage sequence for logic coordinate");
+                    createConcept("inferred assemblage sequence for logic coordinate");
+                    createConcept("description logic profile sequence for logic coordinate");
+                    createConcept("classifier sequence for logic coordinate");
+                    createConcept("stamp precedence for stamp coordinate");
+                    createConcept("stamp position for stamp coordinate");
+                    createConcept("module sequence array for stamp coordinate");
+                    createConcept("path sequence for stamp path");
+                    createConcept("path origin list for stamp path");
+                    createConcept("time for stamp position");
+                    createConcept("path sequence for stamp position");
+                    createConcept("taxonomy type for taxonomy coordinate");
+                    createConcept("stamp coordinate for taxonomy coordinate");
+                    createConcept("language coordinate for taxonomy coordinate");
+                popParent();
+                createConcept("version properties");
+                pushParent(current());
+                    createConcept("status for version");
+                    createConcept("time for version");
+                    createConcept("author sequence for version");
+                    createConcept("module sequence for version");
+                    createConcept("path sequence for version");
+                    createConcept("committed state for version");
+                    createConcept("stamp sequence for version");
+                    createConcept("description version properties");               
+                    pushParent(current());
+                        createConcept("case significance concept sequence for description");               
+                        createConcept("language concept sequence for description");               
+                        createConcept("text for description");               
+                        createConcept("description type for description");               
+                    popParent();
+                popParent();
+                createConcept("chronicle properties");
+                pushParent(current());
+                    createConcept("version list for chronicle");
+                    createConcept("native id for chronicle");
+                    createConcept("concept sequence for chronicle");
+                    createConcept("sememe sequence for chronicle");
+                    createConcept("primordial UUID for chronicle");
+                    createConcept("UUID list for chronicle");
+                    createConcept("committed state for chronicle");
+                    createConcept("sememe list for chronicle");
+                    
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -263,5 +324,16 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 path.getComponentUuid(), paths.getComponentUuid(),
                 IdDirective.GENERATE_HASH, RefexDirective.INCLUDE));
     }
-
+    public static void main(String[] args) {
+        try {
+            IsaacMetadataAuxiliary aux = new IsaacMetadataAuxiliary();
+            aux.exportEConcept(new DataOutputStream(new ByteArrayOutputStream(10240)));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

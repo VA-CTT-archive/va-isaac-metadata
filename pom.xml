@@ -4,23 +4,27 @@
     <parent>
         <groupId>gov.vha.isaac</groupId>
         <artifactId>isaac-parent</artifactId>
-        <version>1.5</version>
+        <version>1.6</version>
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
-    <version>1.28</version>
+    <version>1.29</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}: (MMP) </name>
+    
+    <scm>
+        <url>https://github.com/Apelon-VA/va-isaac-metadata.git</url>
+    </scm>
 
     <properties>
-        <ochre.version>2.26</ochre.version>
+        <ochre.version>2.27</ochre.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>gov.vha.isaac.ochre.modules</groupId>
-                <artifactId>tcc-api</artifactId>        
+                <artifactId>tcc-api</artifactId>
                 <version>${ochre.version}</version>
                 <type>jar</type>
                 <scope>compile</scope>
@@ -44,14 +48,6 @@
                     <groupId>gov.vha.isaac.ochre.modules</groupId>
                     <artifactId>ochre-mojo</artifactId>
                     <version>${ochre.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.slf4j</groupId>
-                            <artifactId>slf4j-simple</artifactId>
-                            <version>${slf4j.version}</version>
-                            <optional>true</optional>
-                        </dependency>
-                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -61,5 +57,6 @@
         <module>isaac-metadata-source</module>
         <module>isaac-metadata-artifacts</module>
         <module>isaac-metadata-coordinates</module>
+        <module>isaac-observables-with-metadata</module>
     </modules>
 </project>

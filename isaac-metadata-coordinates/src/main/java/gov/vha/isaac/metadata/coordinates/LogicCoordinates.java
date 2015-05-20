@@ -17,7 +17,7 @@ package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import gov.vha.isaac.ochre.api.coordinate.LogicCoordinate;
-import gov.vha.isaac.ochre.model.coordinate.LogicCoordinateImpl;
+import gov.vha.isaac.ochre.model.coordinate.LogicCoordinateLazyBinding;
 
 /**
  *
@@ -26,13 +26,9 @@ import gov.vha.isaac.ochre.model.coordinate.LogicCoordinateImpl;
 public class LogicCoordinates {
     
     public static LogicCoordinate getStandardElProfile() {
-        int statedAssemblageSequence = IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM.getSequence();
-        int inferredAssemblageSequnce = IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM.getSequence();
-        int descriptionLogicProfileSequence = IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS.getSequence(); 
-        int classifierSequence = IsaacMetadataAuxiliaryBinding.SNOROCKET.getSequence();
-        return new LogicCoordinateImpl(statedAssemblageSequence, 
-                inferredAssemblageSequnce, 
-                descriptionLogicProfileSequence, 
-                classifierSequence);
+        return new LogicCoordinateLazyBinding(IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_STATED_FORM, 
+                IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS_INFERRED_FORM, 
+                IsaacMetadataAuxiliaryBinding.EL_PLUS_PLUS, 
+                IsaacMetadataAuxiliaryBinding.SNOROCKET);
     }
 }
