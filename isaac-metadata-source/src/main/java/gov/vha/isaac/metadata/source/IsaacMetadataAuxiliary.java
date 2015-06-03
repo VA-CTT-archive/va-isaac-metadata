@@ -314,7 +314,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
         RefexCAB originCAB = pathOrigins.addSememeBlueprint(new RefexCAB(RefexType.CID_LONG,
                 newPath.getComponentUuid(),
                 pathOrigins.getComponentUuid(),
-                IdDirective.GENERATE_REFEX_CONTENT_HASH, RefexDirective.INCLUDE));
+                IdDirective.GENERATE_REFEX_CONTENT_HASH, RefexDirective.EXCLUDE));
         originCAB.getProperties().put(ComponentProperty.COMPONENT_EXTENSION_1_ID, originPath.getComponentUuid());
         originCAB.getProperties().put(ComponentProperty.LONG_EXTENSION_1, System.currentTimeMillis() + 60*60*1000);
     }
@@ -322,7 +322,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
     private void addPath(ConceptCB paths, ConceptCB path) throws ContradictionException, InvalidCAB, IOException {
         paths.addSememeBlueprint(new RefexCAB(RefexType.MEMBER,
                 path.getComponentUuid(), paths.getComponentUuid(),
-                IdDirective.GENERATE_HASH, RefexDirective.INCLUDE));
+                IdDirective.GENERATE_HASH, RefexDirective.EXCLUDE));
     }
     public static void main(String[] args) {
         try {
