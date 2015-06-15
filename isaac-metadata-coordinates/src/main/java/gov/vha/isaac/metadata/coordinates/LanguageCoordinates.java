@@ -16,6 +16,8 @@
 package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
+import gov.vha.isaac.ochre.api.IdentifierService;
+import gov.vha.isaac.ochre.api.LookupService;
 import gov.vha.isaac.ochre.api.coordinate.LanguageCoordinate;
 import gov.vha.isaac.ochre.model.coordinate.LanguageCoordinateImpl;
 
@@ -24,6 +26,8 @@ import gov.vha.isaac.ochre.model.coordinate.LanguageCoordinateImpl;
  * @author kec
  */
 public class LanguageCoordinates {
+    private static final IdentifierService identifierService = 
+            LookupService.getService(IdentifierService.class);
     public static LanguageCoordinate getUsEnglishLanguagePreferredTermCoordinate() {
         int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getSequence();
         int[] dialectAssemblagePreferenceList = new int[] {
@@ -86,31 +90,60 @@ public class LanguageCoordinates {
     public static int iso639toConceptNid(String iso639text) {
         switch (iso639text.toLowerCase()) {
             case "en":
-                return IsaacMetadataAuxiliaryBinding.ENGLISH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.ENGLISH.getUuids());
             case "es":
-                return IsaacMetadataAuxiliaryBinding.SPANISH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.SPANISH.getUuids());
             case "fr": 
-                return IsaacMetadataAuxiliaryBinding.FRENCH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.FRENCH.getUuids());
             case "da":
-                return IsaacMetadataAuxiliaryBinding.DANISH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.DANISH.getUuids());
             case "pl":
-                return IsaacMetadataAuxiliaryBinding.POLISH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.POLISH.getUuids());
             case "nl":
-                return IsaacMetadataAuxiliaryBinding.DUTCH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.DUTCH.getUuids());
             case "lt":
-                return IsaacMetadataAuxiliaryBinding.LITHUANIAN.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.LITHUANIAN.getUuids());
             case "zh":
-                return IsaacMetadataAuxiliaryBinding.CHINESE.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.CHINESE.getUuids());
             case "ja":
-                return IsaacMetadataAuxiliaryBinding.JAPANESE.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.JAPANESE.getUuids());
             case "sv":
-                return IsaacMetadataAuxiliaryBinding.SWEDISH.getNid();
+                return identifierService.getNidForUuids(IsaacMetadataAuxiliaryBinding.SWEDISH.getUuids());
+            default: 
+                throw new UnsupportedOperationException("Can't handle: " + iso639text);
+        }
+    }
+    public static int iso639toConceptSequence(String iso639text) {
+        switch (iso639text.toLowerCase()) {
+            case "en":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.ENGLISH.getUuids());
+            case "es":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.SPANISH.getUuids());
+            case "fr": 
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.FRENCH.getUuids());
+            case "da":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.DANISH.getUuids());
+            case "pl":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.POLISH.getUuids());
+            case "nl":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.DUTCH.getUuids());
+            case "lt":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.LITHUANIAN.getUuids());
+            case "zh":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.CHINESE.getUuids());
+            case "ja":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.JAPANESE.getUuids());
+            case "sv":
+                return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.SWEDISH.getUuids());
             default: 
                 throw new UnsupportedOperationException("Can't handle: " + iso639text);
         }
     }
     
     public static String conceptNidToIso639(int nid) {
+            if (nid >= 0) {
+                nid = identifierService.getConceptNid(nid);
+            }
             if (IsaacMetadataAuxiliaryBinding.ENGLISH.getNid() == nid) {
                 return "en";
             }
@@ -144,5 +177,10 @@ public class LanguageCoordinates {
             throw new UnsupportedOperationException("Can't handle: " + nid);
     }
     
-    
+    public static int caseSignificanceToConceptSequence(boolean initialCaseSignificant) {
+        if (initialCaseSignificant) {
+            return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.INITIAL_CASE_IS_SIGNIFICANT.getUuids());
+        }
+        return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.INITIAL_CASE_IS_NOT_SIGNIFICANT.getUuids());
+    }
 }
