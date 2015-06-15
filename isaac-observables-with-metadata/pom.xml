@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -6,23 +6,21 @@
         <artifactId>isaac-metadata-parent</artifactId>
         <version>1.31-SNAPSHOT</version>
     </parent>
-
+    
     <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
-    <artifactId>isaac-metadata-coordinates</artifactId>
-    <packaging>jar</packaging>
-
+    <artifactId>isaac-observables-with-metadata</artifactId>
     <name>${project.parent.artifactId}: ${project.artifactId}</name>
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
             <artifactId>isaac-metadata-artifacts</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>gov.vha.isaac.ochre.modules</groupId>
-            <artifactId>ochre-model</artifactId>
-            <version>${ochre.version}</version>
+            <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
+            <artifactId>isaac-metadata-coordinates</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

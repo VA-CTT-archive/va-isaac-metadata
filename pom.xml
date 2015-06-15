@@ -4,11 +4,11 @@
     <parent>
         <groupId>gov.vha.isaac</groupId>
         <artifactId>isaac-parent</artifactId>
-        <version>1.6-SNAPSHOT</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
-    <version>1.29-SNAPSHOT</version>
+    <version>1.31-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}: (MMP) </name>
     
@@ -17,14 +17,14 @@
     </scm>
 
     <properties>
-        <ochre.version>2.27-SNAPSHOT</ochre.version>
+        <ochre.version>2.29-SNAPSHOT</ochre.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>gov.vha.isaac.ochre.modules</groupId>
-                <artifactId>tcc-api</artifactId>        
+                <artifactId>tcc-api</artifactId>
                 <version>${ochre.version}</version>
                 <type>jar</type>
                 <scope>compile</scope>
