@@ -183,4 +183,9 @@ public class LanguageCoordinates {
         }
         return identifierService.getConceptSequenceForUuids(IsaacMetadataAuxiliaryBinding.INITIAL_CASE_IS_NOT_SIGNIFICANT.getUuids());
     }
+
+    public static boolean conceptIdToCaseSignificance(int id) {
+        int nid = identifierService.getConceptNid(id);
+        return IsaacMetadataAuxiliaryBinding.INITIAL_CASE_IS_SIGNIFICANT.getNid() == nid;
+    }
 }

@@ -79,7 +79,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     }
     
     @Override
-    public String conceptNidToIso639(int nid) {
+    public String conceptIdToIso639(int nid) {
         return LanguageCoordinates.conceptNidToIso639(nid);
     }
     
@@ -87,6 +87,13 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     public int caseSignificanceToConceptSequence(boolean initialCaseSignificant) {
         return LanguageCoordinates.caseSignificanceToConceptSequence(initialCaseSignificant);
     }
+
+    @Override
+    public boolean conceptIdToCaseSignificance(int id) {
+        return LanguageCoordinates.conceptIdToCaseSignificance(id);
+    }
+    
+    
 
     @Override
     public int getFullySpecifiedConceptSequence() {
@@ -142,7 +149,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
             if (preferredForDialect.value() == null) {
                 descriptionsForLanguageOfType.forEach((DescriptionSememe fsn) -> {
                     Stream<LatestVersion<ComponentNidSememe>> acceptability
-                            = acceptabilitySnapshot.getLatestActiveSememeVersionsForComponentFromAssemblage(fsn.getNid(), dialectAssemblageSequence);
+                            = acceptabilitySnapshot.getLatestSememeVersionsForComponentFromAssemblage(fsn.getNid(), dialectAssemblageSequence);
 
                     if (acceptability.anyMatch((LatestVersion<ComponentNidSememe> acceptabilityVersion) -> {
                         return acceptabilityVersion.value().getComponentNid() == getPreferredConceptSequence();

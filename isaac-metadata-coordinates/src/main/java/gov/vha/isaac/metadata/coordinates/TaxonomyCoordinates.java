@@ -18,7 +18,7 @@ package gov.vha.isaac.metadata.coordinates;
 import gov.vha.isaac.ochre.api.coordinate.LanguageCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.TaxonomyCoordinate;
-import gov.vha.isaac.ochre.api.coordinate.TaxonomyType;
+import gov.vha.isaac.ochre.api.coordinate.PremiseType;
 import gov.vha.isaac.ochre.model.coordinate.TaxonomyCoordinateImpl;
 
 /**
@@ -28,12 +28,12 @@ import gov.vha.isaac.ochre.model.coordinate.TaxonomyCoordinateImpl;
 public class TaxonomyCoordinates {
     public static TaxonomyCoordinate getInferredTaxonomyCoordinate(
             StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate) {
-        return new TaxonomyCoordinateImpl(TaxonomyType.INFERRED, 
+        return new TaxonomyCoordinateImpl(PremiseType.INFERRED, 
                 stampCoordinate, languageCoordinate);
     }
     public static TaxonomyCoordinate getStatedTaxonomyCoordinate(
             StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate) {
-        return new TaxonomyCoordinateImpl(TaxonomyType.STATED, 
+        return new TaxonomyCoordinateImpl(PremiseType.STATED, 
                 stampCoordinate, languageCoordinate);
     }
 }

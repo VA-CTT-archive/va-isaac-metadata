@@ -8,7 +8,7 @@ package gov.vha.isaac.metadata.source;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import gov.vha.isaac.ochre.model.logic.NodeSemantic;
+import gov.vha.isaac.ochre.api.logic.NodeSemantic;
 import static gov.vha.isaac.ochre.observable.model.ObservableFields.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -255,6 +255,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             popParent();
             createConcept("unmodeled concept");
             pushParent(current());
+                createConcept("anonymous concept");
                 createConcept("unmodeled role concept");
                 createConcept("unmodeled feature concept");
                 createConcept("unmodeled taxonomic concept");
@@ -276,12 +277,14 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept(CLASSIFIER_SEQUENCE_FOR_LOGIC_COORDINATE);
                     createConcept(STAMP_PRECEDENCE_FOR_STAMP_COORDINATE);
                     createConcept(STAMP_POSITION_FOR_STAMP_COORDINATE);
+                    createConcept(ALLOWED_STATES_FOR_STAMP_COORDINATE);
                     createConcept(MODULE_SEQUENCE_ARRAY_FOR_STAMP_COORDINATE);
                     createConcept(PATH_SEQUENCE_FOR_STAMP_PATH);
                     createConcept(PATH_ORIGIN_LIST_FOR_STAMP_PATH);
                     createConcept(TIME_FOR_STAMP_POSITION);
                     createConcept(PATH_SEQUENCE_FOR_STAMP_POSITION);
-                    createConcept(TAXONOMY_TYPE_FOR_TAXONOMY_COORDINATE);
+                    createConcept(PREMISE_TYPE_FOR_TAXONOMY_COORDINATE);
+                    createConcept(UUID_FOR_TAXONOMY_COORDINATE);
                     createConcept(STAMP_COORDINATE_FOR_TAXONOMY_COORDINATE);
                     createConcept(LANGUAGE_COORDINATE_FOR_TAXONOMY_COORDINATE);
                 popParent();
