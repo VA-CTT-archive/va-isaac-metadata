@@ -164,7 +164,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 syn.setComponentUuidNoRecompute(Snomed.SYNONYM_DESCRIPTION_TYPE.getUuids()[0]);
                 syn.addExtraUuid(UUID.fromString("d6fad981-7df6-3388-94d8-238cc0465a79"), 
                     GENERATED_UUID.getUuids()[0]);
-                createConcept("definition").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
+                createConcept("definition description type").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
             createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
             createConcept("description case significance");  

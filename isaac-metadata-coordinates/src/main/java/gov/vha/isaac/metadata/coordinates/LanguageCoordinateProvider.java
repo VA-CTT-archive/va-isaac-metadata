@@ -16,11 +16,10 @@
 package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
+import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.LanguageCoordinateService;
-import gov.vha.isaac.ochre.api.LookupService;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
-import gov.vha.isaac.ochre.api.component.sememe.SememeService;
 import gov.vha.isaac.ochre.api.component.sememe.SememeSnapshotService;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
@@ -40,15 +39,6 @@ import org.jvnet.hk2.annotations.Service;
 @Service
 public class LanguageCoordinateProvider implements LanguageCoordinateService {
     
-    private static SememeService sememeService;
-
-    private static SememeService getSememeService() {
-        if (sememeService == null) {
-            sememeService = LookupService.getService(SememeService.class);
-        }
-        return sememeService;
-    }
-
     @Override
     public LanguageCoordinate getUsEnglishLanguagePreferredTermCoordinate() {
         return LanguageCoordinates.getUsEnglishLanguagePreferredTermCoordinate();
@@ -119,7 +109,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     public <V extends DescriptionSememe, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, 
             List<C> descriptionList, 
             int typeSequence, LanguageCoordinate languageCoordinate) {
-        SememeSnapshotService<ComponentNidSememe> acceptabilitySnapshot = getSememeService().getSnapshot(ComponentNidSememe.class, stampCoordinate);
+        SememeSnapshotService<ComponentNidSememe> acceptabilitySnapshot = Get.sememeService().getSnapshot(ComponentNidSememe.class, stampCoordinate);
         
         List<DescriptionSememe> descriptionsForLanguageOfType = new ArrayList();
 

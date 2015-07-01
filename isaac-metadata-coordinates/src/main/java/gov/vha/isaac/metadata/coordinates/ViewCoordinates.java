@@ -10,8 +10,6 @@ import org.ihtsdo.otf.tcc.api.store.Ts;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by kec on 2/16/15.
