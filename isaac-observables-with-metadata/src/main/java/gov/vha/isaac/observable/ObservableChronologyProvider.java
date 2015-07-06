@@ -19,6 +19,7 @@ import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.chronicle.ObjectChronologyType;
 import gov.vha.isaac.ochre.api.chronicle.StampedVersion;
 import gov.vha.isaac.ochre.api.commit.ChronologyChangeListener;
+import gov.vha.isaac.ochre.api.commit.CommitRecord;
 import gov.vha.isaac.ochre.api.component.concept.ConceptChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.version.SememeVersion;
@@ -100,6 +101,11 @@ public class ObservableChronologyProvider
     @Override
     public UUID getListenerUuid() {
         return listenerUuid;
+    }
+
+    @Override
+    public void handleCommit(CommitRecord commitRecord) {
+        // TODO figure out what to do... Only effect is to change commit time...
     }
 
     @Override
