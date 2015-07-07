@@ -26,6 +26,14 @@ public class EditCoordinates {
         return editCoordinate;
     }
 
+    public static EditCoordinate getClassifierSolorOverlay() {
+        EditCoordinate editCoordinate = new EditCoordinateImpl(
+                getNid(IsaacMetadataAuxiliaryBinding.IHTSDO_CLASSIFIER),
+                getNid(IsaacMetadataAuxiliaryBinding.SOLOR_OVERLAY),
+                getNid(IsaacMetadataAuxiliaryBinding.DEVELOPMENT));
+
+        return editCoordinate;
+    }
 
     public static EditCoordinate getDefaultUserVeteransAdministrationExtension() {
 
