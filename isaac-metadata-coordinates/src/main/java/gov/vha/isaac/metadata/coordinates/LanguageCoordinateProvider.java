@@ -104,6 +104,18 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     public int getAcceptableConceptSequence() {
         return IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getSequence();
     }
+
+    @Override
+    public <V extends DescriptionSememe, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, List<C> descriptionList, LanguageCoordinate languageCoordinate) {
+        for (int descType: languageCoordinate.getDescriptionTypePreferenceList()) {
+            Optional<LatestVersion<V>>  match = getSpecifiedDescription(stampCoordinate, 
+            descriptionList,  descType, languageCoordinate);
+            if (match.isPresent()) {
+                return match;
+            }
+        }
+        return Optional.empty();
+    }
     
     @Override
     public <V extends DescriptionSememe, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, 
