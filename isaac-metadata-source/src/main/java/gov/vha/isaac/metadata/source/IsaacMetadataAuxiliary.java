@@ -207,7 +207,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 popParent();
                 createConcept("concept reference").setComponentUuidNoRecompute(NodeSemantic.CONCEPT.getSemanticUuid());
             popParent();
-            createConcept("template concept");
+            createConcept("template concept").setComponentUuidNoRecompute(NodeSemantic.TEMPLATE.getSemanticUuid());
             pushParent(current());
                 createConcept("skin of region template");
                 // add annotations for order and labels
