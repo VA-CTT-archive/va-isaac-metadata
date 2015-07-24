@@ -106,7 +106,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     }
 
     @Override
-    public <V extends DescriptionSememe, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, List<C> descriptionList, LanguageCoordinate languageCoordinate) {
+    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, List<C> descriptionList, LanguageCoordinate languageCoordinate) {
         for (int descType: languageCoordinate.getDescriptionTypePreferenceList()) {
             Optional<LatestVersion<V>>  match = getSpecifiedDescription(stampCoordinate, 
             descriptionList,  descType, languageCoordinate);
@@ -118,7 +118,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     }
     
     @Override
-    public <V extends DescriptionSememe, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, 
+    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, 
             List<C> descriptionList, 
             int typeSequence, LanguageCoordinate languageCoordinate) {
         SememeSnapshotService<ComponentNidSememe> acceptabilitySnapshot = Get.sememeService().getSnapshot(ComponentNidSememe.class, stampCoordinate);
@@ -146,7 +146,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
         }
 
         // handle dialect...
-        LatestVersion<DescriptionSememe> preferredForDialect = new LatestVersion<>(DescriptionSememe.class);
+        LatestVersion<DescriptionSememe<?>> preferredForDialect = new LatestVersion(DescriptionSememe.class);
         IntStream.of(languageCoordinate.getDialectAssemblagePreferenceList()).forEach((dialectAssemblageSequence) -> {
             if (preferredForDialect.value() == null) {
                 descriptionsForLanguageOfType.forEach((DescriptionSememe fsn) -> {
