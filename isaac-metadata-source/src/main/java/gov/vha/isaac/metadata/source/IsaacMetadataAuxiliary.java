@@ -287,6 +287,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept(UUID_FOR_TAXONOMY_COORDINATE);
                     createConcept(STAMP_COORDINATE_FOR_TAXONOMY_COORDINATE);
                     createConcept(LANGUAGE_COORDINATE_FOR_TAXONOMY_COORDINATE);
+                    createConcept(LOGIC_COORDINATE_FOR_TAXONOMY_COORDINATE);
                 popParent();
                 createConcept("version properties");
                 pushParent(current());

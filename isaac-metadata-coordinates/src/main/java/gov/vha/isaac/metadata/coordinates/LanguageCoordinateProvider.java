@@ -131,7 +131,7 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
             if (latestDescription.isPresent()) {
                 LatestVersion<V> latestDescriptionVersion = latestDescription.get();
                 latestDescriptionVersion.versionStream().forEach((descriptionVersion) -> {
-                    if (descriptionVersion.getLanguageConceptSequence() == languageCoordinate.getLanugageConceptSequence()) {
+                    if (descriptionVersion.getLanguageConceptSequence() == languageCoordinate.getLanguageConceptSequence()) {
                         if (descriptionVersion.getDescriptionTypeConceptSequence() == typeSequence) {
                             descriptionsForLanguageOfType.add(descriptionVersion);
                         }

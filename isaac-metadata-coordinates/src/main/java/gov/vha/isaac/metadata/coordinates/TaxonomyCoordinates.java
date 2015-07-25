@@ -15,7 +15,9 @@
  */
 package gov.vha.isaac.metadata.coordinates;
 
+import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.coordinate.LanguageCoordinate;
+import gov.vha.isaac.ochre.api.coordinate.LogicCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.TaxonomyCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.PremiseType;
@@ -26,14 +28,38 @@ import gov.vha.isaac.ochre.model.coordinate.TaxonomyCoordinateImpl;
  * @author kec
  */
 public class TaxonomyCoordinates {
+    /**
+     * Uses the default logic coordinate. 
+     * @param stampCoordinate
+     * @param languageCoordinate
+     * @return 
+     */
     public static TaxonomyCoordinate getInferredTaxonomyCoordinate(
             StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate) {
         return new TaxonomyCoordinateImpl(PremiseType.INFERRED, 
-                stampCoordinate, languageCoordinate);
+                stampCoordinate, languageCoordinate, Get.configurationService().getDefaultLogicCoordinate());
     }
+    /**
+     * Uses the default logic coordinate.
+     * @param stampCoordinate
+     * @param languageCoordinate
+     * @return 
+     */
     public static TaxonomyCoordinate getStatedTaxonomyCoordinate(
             StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate) {
         return new TaxonomyCoordinateImpl(PremiseType.STATED, 
-                stampCoordinate, languageCoordinate);
+                stampCoordinate, languageCoordinate, Get.configurationService().getDefaultLogicCoordinate());
+    }
+    public static TaxonomyCoordinate getInferredTaxonomyCoordinate(
+            StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate,
+            LogicCoordinate logicCoordinate) {
+        return new TaxonomyCoordinateImpl(PremiseType.INFERRED, 
+                stampCoordinate, languageCoordinate, logicCoordinate);
+    }
+    public static TaxonomyCoordinate getStatedTaxonomyCoordinate(
+            StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate,
+            LogicCoordinate logicCoordinate) {
+        return new TaxonomyCoordinateImpl(PremiseType.STATED, 
+                stampCoordinate, languageCoordinate, logicCoordinate);
     }
 }
