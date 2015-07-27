@@ -56,7 +56,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
 
 
    /** Field description */
-   private static final String moduleName = TermAux.ISAAC_MODULE.getDescription();
+   private static final String moduleName = TermAux.ISAAC_MODULE.getConceptDescriptionText();
 
    public IsaacMetadataAuxiliary() throws NoSuchAlgorithmException, UnsupportedEncodingException {
       super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC)", LanguageCode.EN);

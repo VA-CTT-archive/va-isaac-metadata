@@ -20,6 +20,7 @@ import gov.vha.isaac.ochre.api.State;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.StampPosition;
 import gov.vha.isaac.ochre.api.coordinate.StampPrecedence;
+import gov.vha.isaac.ochre.collections.ConceptSequenceSet;
 import gov.vha.isaac.ochre.model.coordinate.StampCoordinateImpl;
 import gov.vha.isaac.ochre.model.coordinate.StampPositionImpl;
 
@@ -30,30 +31,26 @@ import gov.vha.isaac.ochre.model.coordinate.StampPositionImpl;
 public class StampCoordinates {
     public static StampCoordinate getDevelopmentLatest() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
-                IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getSequence());
-        int[] moduleSequences = new int[] {};
+                IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
-                moduleSequences, State.ANY_STATE_SET);
+                ConceptSequenceSet.EMPTY, State.ANY_STATE_SET);
     }
     public static StampCoordinate getDevelopmentLatestActiveOnly() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
-                IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getSequence());
-        int[] moduleSequences = new int[] {};
+                IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
-                moduleSequences, State.ACTIVE_ONLY_SET);
+                ConceptSequenceSet.EMPTY, State.ACTIVE_ONLY_SET);
     }
     public static StampCoordinate getMasterLatest() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
-                IsaacMetadataAuxiliaryBinding.MASTER.getSequence());
-        int[] moduleSequences = new int[] {};
+                IsaacMetadataAuxiliaryBinding.MASTER.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
-                moduleSequences, State.ANY_STATE_SET);
+                ConceptSequenceSet.EMPTY, State.ANY_STATE_SET);
     }
     public static StampCoordinate getMasterLatestActiveOnly() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
-                IsaacMetadataAuxiliaryBinding.MASTER.getSequence());
-        int[] moduleSequences = new int[] {};
+                IsaacMetadataAuxiliaryBinding.MASTER.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
-                moduleSequences, State.ACTIVE_ONLY_SET);
+                ConceptSequenceSet.EMPTY, State.ACTIVE_ONLY_SET);
     }
 }

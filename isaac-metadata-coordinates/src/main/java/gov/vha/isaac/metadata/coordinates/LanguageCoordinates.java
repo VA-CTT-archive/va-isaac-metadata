@@ -26,14 +26,14 @@ import gov.vha.isaac.ochre.model.coordinate.LanguageCoordinateImpl;
  */
 public class LanguageCoordinates {
     public static LanguageCoordinate getUsEnglishLanguagePreferredTermCoordinate() {
-        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getSequence();
+        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getConceptSequence();
         int[] dialectAssemblagePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getSequence(),
-            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getSequence()
+            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getConceptSequence()
         };
         int[] descriptionTypePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.SYNONYM.getSequence(),
-            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getSequence()
+            IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence()
         };
         
         return new LanguageCoordinateImpl(languageSequence, 
@@ -41,28 +41,28 @@ public class LanguageCoordinates {
     }
 
     public static LanguageCoordinate getUsEnglishLanguageFullySpecifiedNameCoordinate() {
-        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getSequence();
+        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getConceptSequence();
         int[] dialectAssemblagePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getSequence(),
-            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getSequence()
+            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getConceptSequence()
         };
         int[] descriptionTypePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getSequence(),
-            IsaacMetadataAuxiliaryBinding.SYNONYM.getSequence()
+            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence()
         };
         
         return new LanguageCoordinateImpl(languageSequence, 
                 dialectAssemblagePreferenceList, descriptionTypePreferenceList);
     }
     public static LanguageCoordinate getGbEnglishLanguagePreferredTermCoordinate() {
-        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getSequence();
+        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getConceptSequence();
         int[] dialectAssemblagePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getSequence(),
-            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getSequence()
+            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getConceptSequence()
         };
         int[] descriptionTypePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.SYNONYM.getSequence(),
-            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getSequence()
+            IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence()
         };
         
         return new LanguageCoordinateImpl(languageSequence, 
@@ -70,14 +70,14 @@ public class LanguageCoordinates {
     }
 
     public static LanguageCoordinate getGbEnglishLanguageFullySpecifiedNameCoordinate() {
-        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getSequence();
+        int languageSequence = IsaacMetadataAuxiliaryBinding.ENGLISH.getConceptSequence();
         int[] dialectAssemblagePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getSequence(),
-            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getSequence()
+            IsaacMetadataAuxiliaryBinding.GB_ENGLISH_DIALECT.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT.getConceptSequence()
         };
         int[] descriptionTypePreferenceList = new int[] {
-            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getSequence(),
-            IsaacMetadataAuxiliaryBinding.SYNONYM.getSequence()
+            IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence(),
+            IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence()
         };
         
         return new LanguageCoordinateImpl(languageSequence, 

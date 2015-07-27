@@ -17,28 +17,95 @@ package gov.vha.isaac.metadata.coordinates;
 
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import gov.vha.isaac.ochre.api.Get;
-import gov.vha.isaac.ochre.api.LanguageCoordinateService;
+import gov.vha.isaac.ochre.api.State;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
+import gov.vha.isaac.ochre.api.component.concept.ConceptSpecification;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeSnapshotService;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
-import gov.vha.isaac.ochre.api.coordinate.LanguageCoordinate;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
+import gov.vha.isaac.ochre.api.coordinate.CoordinateFactory;
+import gov.vha.isaac.ochre.api.coordinate.EditCoordinate;
+import gov.vha.isaac.ochre.api.coordinate.LanguageCoordinate;
+import gov.vha.isaac.ochre.api.coordinate.LogicCoordinate;
+import gov.vha.isaac.ochre.api.coordinate.StampPrecedence;
+import gov.vha.isaac.ochre.api.coordinate.TaxonomyCoordinate;
+import gov.vha.isaac.ochre.model.coordinate.StampCoordinateImpl;
+import gov.vha.isaac.ochre.model.coordinate.StampPositionImpl;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import javax.inject.Singleton;
 import org.jvnet.hk2.annotations.Service;
 
 /**
  *
  * @author kec
  */
-@Service
-public class LanguageCoordinateProvider implements LanguageCoordinateService {
-    
+@Service 
+@Singleton
+public class CoordinateFactoryProvider implements CoordinateFactory {
+
+    @Override
+    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, int year, int month, int dayOfMonth, int hour, int minute, int second) {
+        StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.of(year, month, dayOfMonth, hour, minute, second).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
+        return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, TemporalAccessor temporal) {
+        StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.from(temporal).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
+        return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, CharSequence dateTimeText) {
+        StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.parse(dateTimeText).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
+        return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createDevelopmentLatestStampCoordinate() {
+        return StampCoordinates.getDevelopmentLatest();
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createDevelopmentLatestActiveOnlyStampCoordinate() {
+        return StampCoordinates.getDevelopmentLatestActiveOnly();
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createMasterLatestStampCoordinate() {
+        return StampCoordinates.getMasterLatest();
+    }
+
+    @Override
+    public StampCoordinate<StampCoordinate> createMasterLatestActiveOnlyStampCoordinate() {
+        return StampCoordinates.getMasterLatestActiveOnly();
+    }
+
+    @Override
+    public LogicCoordinate createStandardElProfileLogicCoordinate() {
+        return LogicCoordinates.getStandardElProfile();
+    }
+
+    @Override
+    public TaxonomyCoordinate<TaxonomyCoordinate> createInferredTaxonomyCoordinate(StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
+        return TaxonomyCoordinates.getInferredTaxonomyCoordinate(stampCoordinate, languageCoordinate, logicCoordinate);
+    }
+
+    @Override
+    public TaxonomyCoordinate<TaxonomyCoordinate> createStatedTaxonomyCoordinate(StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
+        return TaxonomyCoordinates.getStatedTaxonomyCoordinate(stampCoordinate, languageCoordinate, logicCoordinate);
+    }
+ 
     @Override
     public LanguageCoordinate getUsEnglishLanguagePreferredTermCoordinate() {
         return LanguageCoordinates.getUsEnglishLanguagePreferredTermCoordinate();
@@ -82,27 +149,25 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
     public boolean conceptIdToCaseSignificance(int id) {
         return LanguageCoordinates.conceptIdToCaseSignificance(id);
     }
-    
-    
 
     @Override
     public int getFullySpecifiedConceptSequence() {
-        return IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getSequence();
+        return IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence();
     }
 
     @Override
     public int getSynonymConceptSequence() {
-        return IsaacMetadataAuxiliaryBinding.SYNONYM.getSequence();
+        return IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence();
     }
 
     @Override
     public int getPreferredConceptSequence() {
-        return IsaacMetadataAuxiliaryBinding.PREFERRED.getSequence();
+        return IsaacMetadataAuxiliaryBinding.PREFERRED.getConceptSequence();
     }
 
     @Override
     public int getAcceptableConceptSequence() {
-        return IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getSequence();
+        return IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getConceptSequence();
     }
 
     @Override
@@ -170,5 +235,39 @@ public class LanguageCoordinateProvider implements LanguageCoordinateService {
         }
         return Optional.of((LatestVersion<V>) preferredForDialect);
     }
-    
+
+    @Override
+    public EditCoordinate createDefaultUserSolorOverlayEditCoordinate() {
+        return EditCoordinates.getDefaultUserSolorOverlay();
+    }
+
+    @Override
+    public EditCoordinate createClassifierSolorOverlayEditCoordinate() {
+        return EditCoordinates.getClassifierSolorOverlay();
+    }
+
+    @Override
+    public EditCoordinate createDefaultUserVeteransAdministrationExtensionEditCoordinate() {
+        return EditCoordinates.getDefaultUserVeteransAdministrationExtension();
+    }
+
+    @Override
+    public EditCoordinate createDefaultUserMetadataEditCoordinate() {
+        return EditCoordinates.getDefaultUserMetadata();
+    }
+
+    @Override
+    public TaxonomyCoordinate<TaxonomyCoordinate> createDefaultInferredTaxonomyCoordinate() {
+        return createInferredTaxonomyCoordinate(createDevelopmentLatestActiveOnlyStampCoordinate(), 
+                getUsEnglishLanguageFullySpecifiedNameCoordinate(), 
+                createStandardElProfileLogicCoordinate());
+    }
+
+    @Override
+    public TaxonomyCoordinate<TaxonomyCoordinate> createDefaultStatedTaxonomyCoordinate() {
+         return createStatedTaxonomyCoordinate(createDevelopmentLatestActiveOnlyStampCoordinate(), 
+                getUsEnglishLanguageFullySpecifiedNameCoordinate(), 
+                createStandardElProfileLogicCoordinate());
+    }
+       
 }
