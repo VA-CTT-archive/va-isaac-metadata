@@ -214,14 +214,14 @@ public class CoordinateFactoryProvider implements CoordinateFactory {
         LatestVersion<DescriptionSememe<?>> preferredForDialect = new LatestVersion(DescriptionSememe.class);
         IntStream.of(languageCoordinate.getDialectAssemblagePreferenceList()).forEach((dialectAssemblageSequence) -> {
             if (preferredForDialect.value() == null) {
-                descriptionsForLanguageOfType.forEach((DescriptionSememe fsn) -> {
+                descriptionsForLanguageOfType.forEach((DescriptionSememe description) -> {
                     Stream<LatestVersion<ComponentNidSememe>> acceptability
-                            = acceptabilitySnapshot.getLatestSememeVersionsForComponentFromAssemblage(fsn.getNid(), dialectAssemblageSequence);
+                            = acceptabilitySnapshot.getLatestSememeVersionsForComponentFromAssemblage(description.getNid(), dialectAssemblageSequence);
 
                     if (acceptability.anyMatch((LatestVersion<ComponentNidSememe> acceptabilityVersion) -> {
-                        return acceptabilityVersion.value().getComponentNid() == getPreferredConceptSequence();
+                         return Get.identifierService().getConceptSequence(acceptabilityVersion.value().getComponentNid()) == getPreferredConceptSequence();
                     })) {
-                        preferredForDialect.addLatest(fsn);
+                        preferredForDialect.addLatest(description);
                     }
                 });
             }
