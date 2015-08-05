@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>gov.vha.isaac.isaac-metadata</groupId>
+        <artifactId>isaac-metadata-parent</artifactId>
+        <version>1.32-SNAPSHOT</version>
+    </parent>
+    
+    <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
+    <artifactId>isaac-ochre-impl</artifactId>
+    <name>${project.parent.artifactId}: ${project.artifactId}</name>
+    <description>A project that allows the implementation of ochre APIs (while having the metadata available on the classpath)</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
+            <artifactId>isaac-metadata-artifacts</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.vha.isaac.isaac-metadata.modules</groupId>
+            <artifactId>isaac-metadata-coordinates</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

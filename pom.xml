@@ -58,5 +58,6 @@
         <module>isaac-metadata-artifacts</module>
         <module>isaac-metadata-coordinates</module>
         <module>isaac-observables-with-metadata</module>
+		<module>isaac-ochre-impl</module>
   </modules>
 </project>

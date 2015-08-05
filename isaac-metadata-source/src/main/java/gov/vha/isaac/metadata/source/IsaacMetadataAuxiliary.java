@@ -6,6 +6,8 @@
 package gov.vha.isaac.metadata.source;
 
 
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeConstants;
+
 //~--- non-JDK imports --------------------------------------------------------
 
 import gov.vha.isaac.ochre.api.logic.NodeSemantic;
@@ -140,6 +142,9 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept("relationship source type reference sets"); //Dynamic Sememes are created under this node for LOINC and RxNorm relationship types
                 popParent();
                 createConcept(RefexDynamic.DYNAMIC_SEMEME_METADATA.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_METADATA.getPrimodialUuid());
+                pushParent(current());
+                createConcept(DynamicSememeConstants.COLUMN_DATA_TYPES);
+                popParent();
           popParent();
           //
             createConcept("axiom origin");
