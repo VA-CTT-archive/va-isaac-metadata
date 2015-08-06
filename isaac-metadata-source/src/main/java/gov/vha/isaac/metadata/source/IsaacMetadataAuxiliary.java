@@ -15,7 +15,6 @@ import static gov.vha.isaac.ochre.observable.model.ObservableFields.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
-import org.ihtsdo.otf.tcc.api.metadata.binding.RefexDynamic;
 import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
 import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
 
@@ -136,12 +135,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
-                createConcept(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getPrimodialUuid());
+                createConcept(DynamicSememeConstants.DYNAMIC_SEMEME_ASSEMBLAGES);
                 pushParent(current());
                     createConcept("description source type reference sets");  //Dynamic Sememes are created under this node for LOINC and RxNorm description types
                     createConcept("relationship source type reference sets"); //Dynamic Sememes are created under this node for LOINC and RxNorm relationship types
                 popParent();
-                createConcept(RefexDynamic.DYNAMIC_SEMEME_METADATA.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_METADATA.getPrimodialUuid());
+                createConcept(DynamicSememeConstants.DYNAMIC_SEMEME_METADATA);
                 pushParent(current());
                 createConcept(DynamicSememeConstants.COLUMN_DATA_TYPES);
                 popParent();

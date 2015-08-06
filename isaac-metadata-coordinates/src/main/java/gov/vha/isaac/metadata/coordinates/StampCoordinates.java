@@ -35,7 +35,7 @@ public class StampCoordinates {
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
                 ConceptSequenceSet.EMPTY, State.ANY_STATE_SET);
     }
-    public static StampCoordinate getDevelopmentLatestActiveOnly() {
+    public static StampCoordinate<StampCoordinate> getDevelopmentLatestActiveOnly() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
                 IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 

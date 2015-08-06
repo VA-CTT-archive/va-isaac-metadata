@@ -1,466 +1,85 @@
 package gov.vha.isaac.ochre.impl.sememe;
 
-import gov.vha.isaac.ochre.api.LookupService;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Copyright Notice
+ *
+ * This is a work of the U.S. Government and is not subject to copyright 
+ * protection in the United States. Foreign copyrights may apply.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import javax.inject.Singleton;
+import org.ihtsdo.otf.tcc.api.blueprint.InvalidCAB;
+import org.ihtsdo.otf.tcc.api.contradiction.ContradictionException;
+import org.ihtsdo.otf.tcc.api.metadata.ComponentType;
+import org.jvnet.hk2.annotations.Service;
+import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
+import gov.vha.isaac.ochre.api.Get;
+import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
+import gov.vha.isaac.ochre.api.component.concept.ConceptChronology;
+import gov.vha.isaac.ochre.api.component.concept.ConceptVersion;
+import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
+import gov.vha.isaac.ochre.api.component.sememe.SememeType;
+import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
+import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DynamicSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeDataBI;
-import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeValidatorType;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeDataType;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeUsageDescriptionBI;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeUtilityBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeArrayBI;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeBooleanBI;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeByteArrayBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeDoubleBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeFloatBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeIntegerBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeLongBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeNidBI;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeSequenceBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeStringBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeUUIDBI;
-import gov.vha.isaac.ochre.model.concept.ConceptChronicleImpl;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
 
-public class DynamicSememeUtility
+/**
+ * {@link DynamicSememeUtility}
+ *
+ * Convenience methods related to DynamicSememes.  Implemented as an interface and a singleton to provide 
+ * lower level code with access to these methods at runtime via HK2.
+  *
+ * @author <a href="mailto:daniel.armbrust.list@gmail.com">Dan Armbrust</a>
+ */
+@Service
+@Singleton
+public class DynamicSememeUtility implements DynamicSememeUtilityBI
 {
-	/**
-	 * These are all defined from the perspective of the userData - so for passesValidator to return true -
-	 * userData must be LESS_THAN validatorDefinitionData, for example.
-	 * 
-	 * @param userData
-	 * @param validatorDefinitionData
-	 * @param viewCoordinate - The View Coordinate - not needed for some types of validations. Null allowed when unneeded (for math based tests, for example)
-	 * @return
-	 */
-	public static boolean passesValidator(DynamicSememeValidatorType dsvt, DynamicSememeDataBI userData, DynamicSememeDataBI validatorDefinitionData, ViewCoordinate viewCoordinate)
-	{
-		if (validatorDefinitionData == null)
-		{
-			throw new RuntimeException("The validator definition data is required");
-		}
-		if (dsvt == DynamicSememeValidatorType.EXTERNAL)
-		{
-			ExternalValidatorBI validator = null;
-			DynamicSememeStringBI[] valNameInfo = null;
-			DynamicSememeArrayBI<DynamicSememeStringBI> stringValidatorDefData = null;
-			String valName = null;
-			if (validatorDefinitionData != null)
-			{
-				stringValidatorDefData = (DynamicSememeArrayBI<DynamicSememeStringBI>)validatorDefinitionData;
-				valNameInfo = stringValidatorDefData.getDataArray();
-			}
-			if (valNameInfo != null && valNameInfo.length > 0)
-			{
-				valName = valNameInfo[0].getDataString();
-				logger.fine("Looking for an ExternalValidatorBI with the name of '" + valName + "'");
-				validator = LookupService.get().getService(ExternalValidatorBI.class, valName);
-			}
-			else
-			{
-				logger.severe("An external validator type was specified, but no ExternalValidatorBI 'name' was provided.  API misuse!");
-			}
-			if (validator == null)
-			{
-				throw new RuntimeException("Could not locate an implementation of ExternalValidatorBI with the requested name of '" + valName + "'");
-			}
-			return validator.validate(userData, stringValidatorDefData, viewCoordinate);
-		}
-		else if (dsvt == DynamicSememeValidatorType.REGEXP)
-		{
-			try
-			{
-				if (userData == null)
-				{
-					return false;
-				}
-				return Pattern.matches(((DynamicSememeStringBI)validatorDefinitionData).getDataString(), userData.getDataObject().toString());
-			}
-			catch (Exception e)
-			{
-				throw new RuntimeException("The specified validator data object was not a valid regular expression: " + e.getMessage());
-			}
-		}
-		else if (dsvt == DynamicSememeValidatorType.IS_CHILD_OF || dsvt == DynamicSememeValidatorType.IS_KIND_OF)
-		{
-			try
-			{
-				int childNid;
-				int parentNid;
-
-				if (userData instanceof DynamicSememeUUIDBI)
-				{
-					childNid = Ts.get().getNidForUuids(((DynamicSememeUUIDBI) userData).getDataUUID());
-				}
-				else if (userData instanceof DynamicSememeNidBI)
-				{
-					childNid = ((DynamicSememeNidBI) userData).getDataNid();
-				}
-				else
-				{
-					throw new RuntimeException("Userdata is invalid for a IS_CHILD_OF or IS_KIND_OF comparison");
-				}
-
-				if (validatorDefinitionData instanceof DynamicSememeUUIDBI)
-				{
-					parentNid = Ts.get().getNidForUuids(((DynamicSememeUUIDBI) validatorDefinitionData).getDataUUID());
-				}
-				else if (validatorDefinitionData instanceof DynamicSememeNidBI)
-				{
-					parentNid = ((DynamicSememeNidBI) validatorDefinitionData).getDataNid();
-				}
-				else
-				{
-					throw new RuntimeException("Validator DefinitionData is invalid for a IS_CHILD_OF or IS_KIND_OF comparison");
-				}
-
-				return (dsvt == DynamicSememeValidatorType.IS_CHILD_OF ? Ts.get().isChildOf(childNid, parentNid, viewCoordinate) : Ts.get().isKindOf(childNid, parentNid, viewCoordinate));
-			}
-			catch (Exception e)
-			{
-				logger.log(Level.WARNING, "Failure executing validator", e);
-				throw new RuntimeException("Failure executing validator", e);
-			}
-		}
-		else if (dsvt == DynamicSememeValidatorType.COMPONENT_TYPE)
-		{
-			try
-			{
-				int nid;
-
-				if (userData instanceof DynamicSememeUUIDBI)
-				{
-					DynamicSememeUUIDBI uuid = (DynamicSememeUUIDBI) userData;
-					if (!Ts.get().hasUuid(uuid.getDataUUID()))
-					{
-						throw new RuntimeException("The specified UUID can not be found in the database, so the validator cannot execute");
-					}
-					else
-					{
-						nid = Ts.get().getNidForUuids(uuid.getDataUUID());
-					}
-				}
-				else if (userData instanceof DynamicSememeNidBI)
-				{
-					nid = ((DynamicSememeNidBI) userData).getDataNid();
-				}
-				else
-				{
-					throw new RuntimeException("Userdata is invalid for a COMPONENT_TYPE comparison");
-				}
-				
-				ComponentChronicleBI<?> cc = Ts.get().getComponent(nid);
-				
-				String valData = validatorDefinitionData.getDataObject().toString().trim();
-				
-				ComponentType ct = ComponentType.parse(valData);
-				
-				switch (ct)
-				{
-					//In the strange land of Workbench, concept attributes have the same NID as concepts....
-					case CONCEPT: case CONCEPT_ATTRIBUTES:
-					{
-						if (!(cc instanceof ConceptChronicleBI) && !(cc instanceof ConceptAttributeChronicleBI))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case DESCRIPTION:
-					{
-						if (!(cc instanceof DescriptionChronicleBI))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case MEDIA:
-					{
-						if (!(cc instanceof MediaChronicleBI))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case RELATIONSHIP:
-					{
-						if (!(cc instanceof RelationshipChronicleBI))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case SEMEME:
-					{
-						if (!(cc instanceof RefexChronicleBI<?>))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case SEMEME_DYNAMIC:
-					{
-						if (!(cc instanceof DynamicSememeChronicleBI<?>))
-						{
-							throw new RuntimeException("The specified component must be of type " + ct.toString() + ", not " + cc.getClass().getSimpleName());
-						}
-						return true;
-					}
-					case UNKNOWN:
-					{
-						throw new RuntimeException("Couldn't determine validator type from validator data '" + valData + "'");
-					}
-
-					default:
-						throw new RuntimeException("Unexpected error");
-				}
-			}
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-				throw new RuntimeException("The entry doesn't appear to be a valid NID");
-			}
-			catch (RuntimeException e)
-			{
-				throw e;
-			}
-			catch (Exception e)
-			{
-				logger.log(Level.WARNING, "Failure executing validator", e);
-				throw new RuntimeException("Failure executing validator", e);
-			}
-		}
-		else
-		{
-			Number userDataNumber = readNumber(userData);
-			Number validatorDefinitionDataNumber;
-			if (dsvt == DynamicSememeValidatorType.INTERVAL)
-			{
-				boolean leftInclusive;
-				boolean rightInclusive;
-
-				String s = validatorDefinitionData.getDataObject().toString().trim();
-
-				if (s.charAt(0) == '[')
-				{
-					leftInclusive = true;
-				}
-				else if (s.charAt(0) == '(')
-				{
-					leftInclusive = false;
-				}
-				else
-				{
-					throw new RuntimeException("Invalid INTERVAL definition in the validator definition data - char 0 should be [ or (");
-				}
-				if (s.charAt(s.length() - 1) == ']')
-				{
-					rightInclusive = true;
-				}
-				else if (s.charAt(s.length() - 1) == ')')
-				{
-					rightInclusive = false;
-				}
-				else
-				{
-					throw new RuntimeException("Invalid INTERVAL definition in the validator definition data - last char should be ] or )");
-				}
-
-				String numeric = s.substring(1, s.length() - 1);
-				numeric = numeric.replaceAll("\\s", "");
-
-				int pos = numeric.indexOf(',');
-				Number left = null;
-				Number right = null;
-				if (pos == 0)
-				{
-					//left is null (- infinity)
-					right = parseUnknown(numeric.substring(1, numeric.length()));
-				}
-				else if (pos > 0)
-				{
-					left = parseUnknown(numeric.substring(0, pos));
-					if (numeric.length() > (pos + 1))
-					{
-						right = parseUnknown(numeric.substring(pos + 1));
-					}
-				}
-				else
-				{
-					throw new RuntimeException("Invalid INTERVAL definition in the validator definition data");
-				}
-				
-				//make sure interval is properly specified
-				if (left != null && right != null)
-				{
-					if (compare(left, right) > 0)
-					{
-						throw new RuntimeException("Invalid INTERVAL definition the left value should be <= the right value");
-					}
-				}
-
-				if (left != null)
-				{
-					int compareLeft = compare(userDataNumber, left);
-					if ((!leftInclusive && compareLeft == 0) || compareLeft < 0)
-					{
-						return false;
-					}
-				}
-				if (right != null)
-				{
-					int compareRight = compare(userDataNumber, right);
-					if ((!rightInclusive && compareRight == 0) || compareRight > 0)
-					{
-						return false;
-					}
-				}
-				return true;
-			}
-			else
-			{
-				validatorDefinitionDataNumber = readNumber(validatorDefinitionData);
-				int compareResult = compare(userDataNumber, validatorDefinitionDataNumber);
-
-				switch (dsvt)
-				{
-					case LESS_THAN:
-						return compareResult < 0;
-					case GREATER_THAN:
-						return compareResult > 0;
-					case GREATER_THAN_OR_EQUAL:
-						return compareResult >= 0;
-					case LESS_THAN_OR_EQUAL:
-						return compareResult <= 0;
-					default:
-						throw new RuntimeException("oops");
-				}
-			}
-		}
-	}
 	
 	/**
-	 * A convenience wrapper of {@link #passesValidator(DynamicSememeDataBI, DynamicSememeDataBI, ViewCoordinate)} that just returns a string - never
-	 * throws an error
-	 * 
-	 * These are all defined from the perspective of the userData - so for passesValidator to return true -
-	 * userData must be LESS_THAN validatorDefinitionData, for example.
-	 * 
-	 * @param userData
-	 * @param validatorDefinitionData
-	 * @param vc - The View Coordinate - not needed for some types of validations. Null allowed when unneeded (for math based tests, for example)
-	 * @return - empty string if valid, an error message otherwise.
+	 * Read the {@link DynamicSememeUsageDescriptionBI} for the specified assemblage concept
 	 */
-	public static String passesValidatorStringReturn(DynamicSememeValidatorType dsvt, DynamicSememeDataBI userData, DynamicSememeDataBI validatorDefinitionData, ViewCoordinate vc)
+	@Override
+	public DynamicSememeUsageDescriptionBI readDynamicSememeUsageDescription(int assemblageNidOrSequence)
 	{
-		try
-		{
-			if (passesValidator(dsvt, userData, validatorDefinitionData, vc))
-			{
-				return "";
-			}
-			else
-			{
-				return "The value does not pass the validator";
-			}
-		}
-		catch (Exception e)
-		{
-			return e.getMessage();
-		}
+		return DynamicSememeUsageDescription.read(assemblageNidOrSequence);
 	}
 
-	private static Number parseUnknown(String value)
-	{
-		try
-		{
-			return Integer.parseInt(value);
-		}
-		catch (Exception e)
-		{
-			//noop
-		}
-		try
-		{
-			return Long.parseLong(value);
-		}
-		catch (Exception e)
-		{
-			//noop
-		}
-		try
-		{
-			return Float.parseFloat(value);
-		}
-		catch (Exception e)
-		{
-			//noop
-		}
-		try
-		{
-			return Double.parseDouble(value);
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException("Unexpected data passed in to parseUnknown (" + value + ")");
-		}
-	}
-
-	public static Number readNumber(DynamicSememeDataBI value)
-	{
-		if (value instanceof DynamicSememeDoubleBI)
-		{
-			return Double.valueOf(((DynamicSememeDoubleBI) value).getDataDouble());
-		}
-		else if (value instanceof DynamicSememeFloatBI)
-		{
-			return Float.valueOf(((DynamicSememeFloatBI) value).getDataFloat());
-		}
-		else if (value instanceof DynamicSememeIntegerBI)
-		{
-			return Integer.valueOf(((DynamicSememeIntegerBI) value).getDataInteger());
-		}
-		else if (value instanceof DynamicSememeLongBI)
-		{
-			return Long.valueOf(((DynamicSememeLongBI) value).getDataLong());
-		}
-		else
-		{
-			throw new RuntimeException("The value passed in to the validator is not a number");
-		}
-	}
-
-	public static int compare(final Number x, final Number y)
-	{
-		if (isSpecial(x) || isSpecial(y))
-		{
-			return Double.compare(x.doubleValue(), y.doubleValue());
-		}
-		else
-		{
-			return toBigDecimal(x).compareTo(toBigDecimal(y));
-		}
-	}
-
-	private static boolean isSpecial(final Number x)
-	{
-		boolean specialDouble = x instanceof Double && (Double.isNaN((Double) x) || Double.isInfinite((Double) x));
-		boolean specialFloat = x instanceof Float && (Float.isNaN((Float) x) || Float.isInfinite((Float) x));
-		return specialDouble || specialFloat;
-	}
-
-	public static BigDecimal toBigDecimal(final Number number)
-	{
-		if (number instanceof Integer || number instanceof Long)
-		{
-			return new BigDecimal(number.longValue());
-		}
-		else if (number instanceof Float || number instanceof Double)
-		{
-			return new BigDecimal(number.doubleValue());
-		}
-		else
-		{
-			throw new RuntimeException("Unexpected data type passed in to toBigDecimal (" + number.getClass() + ")");
-		}
-	}
-	
 	/**
 	 * Create a new concept using the provided columnName and columnDescription values which is suitable 
 	 * for use as a column descriptor within {@link DynamicSememeUsageDescription}.
@@ -490,43 +109,342 @@ public class DynamicSememeUtility
 	 * @throws InvalidCAB 
 	 * @throws IOException 
 	 */
-	public static ConceptChronicleImpl createNewDynamicSememeColumnInfoConcept(String columnName, String columnDescription, ViewCoordinate vc) 
-			throws IOException
+	
+	//TODO dan implement when needed
+//	public static ConceptChronicleImpl createNewDynamicSememeColumnInfoConcept(String columnName, String columnDescription, ViewCoordinate vc) 
+//			throws IOException
+//	{
+//		if (columnName == null || columnName.length() == 0 || columnDescription == null || columnDescription.length() == 0)
+//		{
+//			throw new IOException("Both the column name and column description are required");
+//		}
+//
+//		LanguageCode lc = LanguageCode.EN_US;
+//		UUID isA = Snomed.IS_A.getUuids()[0];
+//		IdDirective idDir = IdDirective.GENERATE_HASH;
+//		UUID module = Snomed.CORE_MODULE.getUuids()[0];
+//		UUID parents[] = new UUID[] { DynamicSememe.DYNAMIC_SEMEME_COLUMNS.getUuids()[0] };
+//
+//		ConceptCB cab = new ConceptCB(columnName, columnName, lc, isA, idDir, module, null, parents);
+//		
+//		DescriptionCAB dCab = new DescriptionCAB(cab.getComponentUuid(),  Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0], LanguageCode.EN, 
+//				columnDescription, false, IdDirective.GENERATE_HASH);
+//		dCab.getProperties().put(ComponentProperty.MODULE_ID, module);
+//		
+//		RefexCAB rCab = new RefexCAB(RefexType.CID, dCab.getComponentUuid(), 
+//				Snomed.US_LANGUAGE_REFEX.getUuids()[0], IdDirective.GENERATE_HASH, RefexDirective.EXCLUDE);
+//		rCab.put(ComponentProperty.COMPONENT_EXTENSION_1_ID, SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
+//		rCab.getProperties().put(ComponentProperty.MODULE_ID, module);
+//		
+//		dCab.addAnnotationBlueprint(rCab);
+//		
+//		cab.addDescriptionCAB(dCab);
+//		
+//		ConceptChronicleBI newCon = Ts.get().getTerminologyBuilder(
+//				new EditCoordinate(TermAux.USER.getLenient().getConceptNid(), 
+//					TermAux.ISAAC_MODULE.getLenient().getNid(), 
+//					TermAux.WB_AUX_PATH.getLenient().getConceptNid()), 
+//					vc).construct(cab);
+//		Ts.get().addUncommitted(newCon);
+//		Ts.get().commit(/* newCon */);
+//		
+//		return newCon;
+//	}
+	
+	/**
+	 * See {@link DynamicSememeUsageDescriptionBI} for the full details on what this builds.
+	 * 
+	 * Does all the work to create a new concept that is suitable for use as an Assemblage Concept for a new style Dynamic Refex.
+	 * 
+	 * The concept will be created under the concept {@link DynamicSememe#DYNAMIC_SEMEME_ASSEMBLAGES} if a parent is not specified
+	 * 
+	 * //TODO (artf231856) [REFEX] figure out language details (how we know what language to put on the name/description
+	 * @param refexFSN - The FSN for this refex concept that will be created.
+	 * @param refexPreferredTerm - The preferred term for this refex concept that will be created.
+	 * @param refexDescription - A user friendly string the explains the overall intended purpose of this refex (what it means, what it stores)
+	 * @param columns - The column information for this new refex.  May be an empty list or null.
+	 * @param parentConcept  - optional - if null, uses {@link DynamicSememe#DYNAMIC_SEMEME_ASSEMBLAGES}
+	 * @param annotationStyle - true for annotation style storage, false for memberset storage
+	 * @param referencedComponentRestriction - optional - may be null - if provided - this restricts the type of object referenced by the nid or 
+	 * UUID that is set for the referenced component in an instance of this refex.  If {@link ComponentType#UNKNOWN} is passed, it is ignored, as 
+	 * if it were null.
+	 * @param vc view coordinate -  highly recommended that you use ViewCoordinates.getMetadataViewCoordinate()
+	 * @return a reference to the newly created refex item
+	 * @throws IOException
+	 * @throws ContradictionException
+	 * @throws InvalidCAB
+	 * @throws PropertyVetoException
+	 */
+	//TODO dan hacking - try to get the VC back out as a parameter (here and one other place)
+//TODO implement when needed
+	//	public static DynamicSememeUsageDescription createNewDynamicSememeUsageDescriptionConcept(String refexFSN, String refexPreferredTerm, 
+//			String refexDescription, DynamicSememeColumnInfo[] columns, UUID parentConcept, boolean annotationStyle, ComponentType referencedComponentRestriction,
+//			ViewCoordinate vc) throws IOException, ContradictionException, InvalidCAB, PropertyVetoException
+//	{
+//		LanguageCode lc = LanguageCode.EN_US;
+//		UUID isA = Snomed.IS_A.getUuids()[0];
+//		IdDirective idDir = IdDirective.GENERATE_HASH;
+//		UUID module = TermAux.ISAAC_MODULE.getPrimodialUuid();
+//		UUID parents[] = new UUID[] { parentConcept == null ? DynamicSememe.DYNAMIC_SEMEME_ASSEMBLAGES.getUuids()[0] : parentConcept };
+//		UUID path = null; // TODO get the path set right...
+//
+//		ConceptCB cab = new ConceptCB(refexFSN, refexPreferredTerm, lc, isA, idDir, module, path, parents);
+//		cab.setAnnotationRefexExtensionIdentity(annotationStyle);
+//		
+//		DescriptionCAB dCab = new DescriptionCAB(cab.getComponentUuid(), Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0], lc, refexDescription, true,
+//				IdDirective.GENERATE_HASH);
+//		dCab.getProperties().put(ComponentProperty.MODULE_ID, module);
+//		
+//		//Mark it as preferred
+//		RefexCAB rCabPreferred = new RefexCAB(RefexType.CID, dCab.getComponentUuid(), 
+//				Snomed.US_LANGUAGE_REFEX.getUuids()[0], IdDirective.GENERATE_HASH, RefexDirective.EXCLUDE);
+//		rCabPreferred.put(ComponentProperty.COMPONENT_EXTENSION_1_ID, SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
+//		rCabPreferred.getProperties().put(ComponentProperty.MODULE_ID, module);
+//		dCab.addAnnotationBlueprint(rCabPreferred);
+//		
+//		DynamicSememeCAB descriptionMarker = new DynamicSememeCAB(dCab.getComponentUuid(), DynamicSememe.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getUuids()[0]);
+//		dCab.addAnnotationBlueprint(descriptionMarker);
+//	
+//		cab.addDescriptionCAB(dCab);
+//		
+//		if (columns != null)
+//		{
+//			//Ensure that we process in column order - we don't always keep track of that later - we depend on the data being stored in the right order.
+//			TreeSet<DynamicSememeColumnInfo> sortedColumns = new TreeSet<>(Arrays.asList(columns));
+//			
+//			for (DynamicSememeColumnInfo ci : sortedColumns)
+//			{
+//				DynamicSememeCAB rCab = new DynamicSememeCAB(cab.getComponentUuid(), DynamicSememe.DYNAMIC_SEMEME_EXTENSION_DEFINITION.getUuids()[0]);
+//				
+//				DynamicSememeDataBI[] data = new DynamicSememeDataBI[7];
+//				
+//				data[0] = new DynamicSememeInteger(ci.getColumnOrder());
+//				data[1] = new DynamicSememeUUID(ci.getColumnDescriptionConcept());
+//				if (DynamicSememeDataType.UNKNOWN == ci.getColumnDataType())
+//				{
+//					throw new InvalidCAB("Error in column - if default value is provided, the type cannot be polymorphic");
+//				}
+//				data[2] = new DynamicSememeString(ci.getColumnDataType().name());
+//				data[3] = convertPolymorphicDataColumn(ci.getDefaultColumnValue(), ci.getColumnDataType());
+//				data[4] = new DynamicSememeBoolean(ci.isColumnRequired());
+//				data[5] = (ci.getValidator() == null ? null : new DynamicSememeString(ci.getValidator().name()));
+//				data[6] = (ci.getValidatorData() == null ? null : convertPolymorphicDataColumn(ci.getValidatorData(), ci.getValidatorData().getRefexDataType()));
+//				rCab.setData(data, null);  //View Coordinate is only used to evaluate validators - but there are no validators assigned to the RefexDefinition refex
+//				//so we can get away with passing null
+//				//TODO file a another bug, this API is atrocious.  If you put the annotation on the concept, it gets silently ignored.
+//				cab.getConceptAttributeAB().addAnnotationBlueprint(rCab);
+//			}
+//		}
+//		
+//		if (referencedComponentRestriction != null && ComponentType.UNKNOWN != referencedComponentRestriction)
+//		{
+//			DynamicSememeCAB rCab = new DynamicSememeCAB(cab.getComponentUuid(), DynamicSememe.DYNAMIC_SEMEME_REFERENCED_COMPONENT_RESTRICTION.getUuids()[0]);
+//			
+//			DynamicSememeDataBI[] data = new DynamicSememeDataBI[1];
+//			data[0] = new DynamicSememeString(referencedComponentRestriction.name());
+//			rCab.setData(data, null);  //View Coordinate is only used to evaluate validators - but there are no validators assigned to the RefexDefinition refex
+//			//so we can get away with passing null
+//			cab.getConceptAttributeAB().addAnnotationBlueprint(rCab);
+//		}
+//		
+//		//Build this on the lowest level path, otherwise, other code that references this will fail (as it doesn't know about custom paths)
+//		ConceptChronicleBI newCon = Ts.get().getTerminologyBuilder(
+//				new EditCoordinate(TermAux.USER.getLenient().getNid(), 
+//						TermAux.ISAAC_MODULE.getLenient().getNid(), 
+//						DEVELOPMENT.getLenient().getConceptNid()), 
+//				vc).construct(cab);
+//		Ts.get().addUncommitted(newCon);
+//		Ts.get().commit();
+//		return new DynamicSememeUsageDescription(newCon.getNid());
+//	}
+	
+	private static DynamicSememeDataBI convertPolymorphicDataColumn(DynamicSememeDataBI defaultValue, DynamicSememeDataType columnType) 
 	{
-		if (columnName == null || columnName.length() == 0 || columnDescription == null || columnDescription.length() == 0)
+		DynamicSememeDataBI result;
+		
+		if (defaultValue != null)
 		{
-			throw new IOException("Both the column name and column description are required");
+			try
+			{
+				if (DynamicSememeDataType.BOOLEAN == columnType)
+				{
+					result = (DynamicSememeBooleanBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.BYTEARRAY == columnType)
+				{
+					result = (DynamicSememeByteArrayBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.DOUBLE == columnType)
+				{
+					result = (DynamicSememeDoubleBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.FLOAT == columnType)
+				{
+					result = (DynamicSememeFloatBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.INTEGER == columnType)
+				{
+					result = (DynamicSememeIntegerBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.LONG == columnType)
+				{
+					result = (DynamicSememeLongBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.NID == columnType)
+				{
+					result = (DynamicSememeNidBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.STRING == columnType)
+				{
+					result = (DynamicSememeStringBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.UUID == columnType)
+				{
+					result = (DynamicSememeUUIDBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.ARRAY == columnType)
+				{
+					result = (DynamicSememeArrayBI<?>)defaultValue;
+				}
+				else if (DynamicSememeDataType.SEQUENCE== columnType)
+				{
+					result = (DynamicSememeSequenceBI)defaultValue;
+				}
+				else if (DynamicSememeDataType.POLYMORPHIC == columnType)
+				{
+					throw new RuntimeException("Error in column - if default value is provided, the type cannot be polymorphic");
+				}
+				else
+				{
+					throw new RuntimeException("Actually, the implementation is broken.  Ooops.");
+				}
+			}
+			catch (ClassCastException e)
+			{
+				throw new RuntimeException("Error in column - if default value is provided, the type must be compatible with the the column descriptor type");
+			}
 		}
-
-		LanguageCode lc = LanguageCode.EN_US;
-		UUID isA = Snomed.IS_A.getUuids()[0];
-		IdDirective idDir = IdDirective.GENERATE_HASH;
-		UUID module = Snomed.CORE_MODULE.getUuids()[0];
-		UUID parents[] = new UUID[] { DynamicSememe.DYNAMIC_SEMEME_COLUMNS.getUuids()[0] };
-
-		ConceptCB cab = new ConceptCB(columnName, columnName, lc, isA, idDir, module, null, parents);
-		
-		DescriptionCAB dCab = new DescriptionCAB(cab.getComponentUuid(),  Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0], LanguageCode.EN, 
-				columnDescription, false, IdDirective.GENERATE_HASH);
-		dCab.getProperties().put(ComponentProperty.MODULE_ID, module);
-		
-		RefexCAB rCab = new RefexCAB(RefexType.CID, dCab.getComponentUuid(), 
-				Snomed.US_LANGUAGE_REFEX.getUuids()[0], IdDirective.GENERATE_HASH, RefexDirective.EXCLUDE);
-		rCab.put(ComponentProperty.COMPONENT_EXTENSION_1_ID, SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
-		rCab.getProperties().put(ComponentProperty.MODULE_ID, module);
-		
-		dCab.addAnnotationBlueprint(rCab);
-		
-		cab.addDescriptionCAB(dCab);
-		
-		ConceptChronicleBI newCon = Ts.get().getTerminologyBuilder(
-				new EditCoordinate(TermAux.USER.getLenient().getConceptNid(), 
-					TermAux.ISAAC_MODULE.getLenient().getNid(), 
-					TermAux.WB_AUX_PATH.getLenient().getConceptNid()), 
-					vc).construct(cab);
-		Ts.get().addUncommitted(newCon);
-		Ts.get().commit(/* newCon */);
-		
-		return newCon;
+		else
+		{
+			result = null;
+		}
+		return result;
 	}
+
+	@Override
+	public String[] readDynamicSememeColumnNameDescription(UUID columnDescriptionConcept)
+	{
+		String columnName = null;
+		String columnDescription = null;
+		String fsn = null;
+		String acceptableSynonym = null;
+		String acceptableDefinition = null;
+		try
+		{
+			ConceptChronology<? extends ConceptVersion<?>> cc = Get.conceptService().getConcept(columnDescriptionConcept);
+			for (SememeChronology dc : cc.getConceptDescriptionList())
+			{
+				if (columnName != null && columnDescription != null)
+				{
+					break;
+				}
+				
+				Optional<LatestVersion<DescriptionSememe>> descriptionVersion = 
+						dc.getLatestVersion(DescriptionSememe.class, Get.configurationService().getDefaultStampCoordinate());
+				
+				if (descriptionVersion.isPresent())
+				{
+					DescriptionSememe<?> d = descriptionVersion.get().value();
+					if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
+					{
+						fsn = d.getText();
+					}
+					else if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence())
+					{
+						AtomicReference<Boolean> isPreferred = new AtomicReference<>();
+						Get.sememeService().getSememesForComponentFromAssemblage(d.getNid(), IsaacMetadataAuxiliaryBinding.DESCRIPTION_ACCEPTABILITY.getConceptSequence())
+							.forEach(nestedSememe ->
+						{
+							if (nestedSememe.getSememeType() == SememeType.COMPONENT_NID)
+							{
+								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.PREFERRED.getNid())
+								{
+									isPreferred.set(true);
+								}
+								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getNid())
+								{
+									isPreferred.set(false);
+								}
+							}
+						});
+						if (isPreferred.get() != null && isPreferred.get().booleanValue())
+						{
+							columnName = d.getText();
+						}
+						else
+						{
+							acceptableSynonym = d.getText();
+						}
+					}
+					else if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
+					{
+						AtomicReference<Boolean> isPreferred = new AtomicReference<>();
+						Get.sememeService().getSememesForComponentFromAssemblage(d.getNid(), IsaacMetadataAuxiliaryBinding.DESCRIPTION_ACCEPTABILITY.getConceptSequence())
+							.forEach(nestedSememe ->
+						{
+							if (nestedSememe.getSememeType() == SememeType.COMPONENT_NID)
+							{
+								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.PREFERRED.getNid())
+								{
+									isPreferred.set(true);
+								}
+								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getNid())
+								{
+									isPreferred.set(false);
+								}
+							}
+						});
+						if (isPreferred.get() != null && isPreferred.get().booleanValue())
+						{
+							columnDescription = d.getText();
+						}
+						else
+						{
+							acceptableDefinition = d.getText();
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Failure reading DynamicSememeColumnInfo '" + columnDescriptionConcept + "'", e);
+		}
+		if (columnName == null)
+		{
+			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No preferred synonym found on '" + columnDescriptionConcept + "' to use "
+					+ "for the column name - using FSN");
+			columnName = (fsn == null ? "ERROR - see log" : fsn);
+		}
+		
+		if (columnDescription == null && acceptableDefinition != null)
+		{
+			columnDescription = acceptableDefinition;
+		}
+		
+		if (columnDescription == null && acceptableSynonym != null)
+		{
+			columnDescription = acceptableSynonym;
+		}
+		
+		if (columnDescription == null)
+		{
+			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No preferred or acceptable definition or acceptable synonym found on '" 
+					+ columnDescriptionConcept + "' to use for the column description- re-using the the columnName, instead.");
+			columnDescription = columnName;
+		}
+		return new String[] {columnName, columnDescription};
+	}
+	
+	
 }
