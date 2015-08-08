@@ -56,7 +56,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
 
 
    /** Field description */
-   private static final String moduleName = TermAux.ISAAC_MODULE.getDescription();
+   private static final String moduleName = TermAux.ISAAC_MODULE.getConceptDescriptionText();
 
    public IsaacMetadataAuxiliary() throws NoSuchAlgorithmException, UnsupportedEncodingException {
       super(TermAux.WB_AUX_PATH, TermAux.USER, moduleName, TermAux.IS_A, "(ISAAC)", LanguageCode.EN);
@@ -164,7 +164,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 syn.setComponentUuidNoRecompute(Snomed.SYNONYM_DESCRIPTION_TYPE.getUuids()[0]);
                 syn.addExtraUuid(UUID.fromString("d6fad981-7df6-3388-94d8-238cc0465a79"), 
                     GENERATED_UUID.getUuids()[0]);
-                createConcept("definition").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
+                createConcept("definition description type").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
             createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
             createConcept("description case significance");  
@@ -207,7 +207,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 popParent();
                 createConcept("concept reference").setComponentUuidNoRecompute(NodeSemantic.CONCEPT.getSemanticUuid());
             popParent();
-            createConcept("template concept");
+            createConcept("template concept").setComponentUuidNoRecompute(NodeSemantic.TEMPLATE.getSemanticUuid());
             pushParent(current());
                 createConcept("skin of region template");
                 // add annotations for order and labels
@@ -287,6 +287,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept(UUID_FOR_TAXONOMY_COORDINATE);
                     createConcept(STAMP_COORDINATE_FOR_TAXONOMY_COORDINATE);
                     createConcept(LANGUAGE_COORDINATE_FOR_TAXONOMY_COORDINATE);
+                    createConcept(LOGIC_COORDINATE_FOR_TAXONOMY_COORDINATE);
                 popParent();
                 createConcept("version properties");
                 pushParent(current());

@@ -15,11 +15,11 @@
  */
 package gov.vha.isaac.observable;
 
-import gov.vha.isaac.ochre.api.IdentifierService;
-import gov.vha.isaac.ochre.api.LookupService;
+import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.chronicle.ObjectChronologyType;
 import gov.vha.isaac.ochre.api.chronicle.StampedVersion;
 import gov.vha.isaac.ochre.api.commit.ChronologyChangeListener;
+import gov.vha.isaac.ochre.api.commit.CommitRecord;
 import gov.vha.isaac.ochre.api.component.concept.ConceptChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.version.SememeVersion;
@@ -49,8 +49,6 @@ public class ObservableChronologyProvider
 
     private final UUID listenerUuid = UUID.randomUUID();
 
-    private static final IdentifierService idService
-            = LookupService.getService(IdentifierService.class);
 
     ConcurrentReferenceHashMap<Integer, ObservableConceptChronology> observableConceptMap = new ConcurrentReferenceHashMap<>(
             ConcurrentReferenceHashMap.ReferenceType.STRONG,
@@ -78,7 +76,7 @@ public class ObservableChronologyProvider
     @Override
     public ObservableConceptChronology getObservableConceptChronology(int id) {
         if (id >= 0) {
-            id = idService.getConceptNid(id);
+            id = Get.identifierService().getConceptNid(id);
         }
         ObservableConceptChronology occ = observableConceptMap.get(id);
         if (occ != null) {
@@ -91,7 +89,7 @@ public class ObservableChronologyProvider
     @Override
     public ObservableSememeChronology getObservableSememeChronology(int id) {
         if (id >= 0) {
-            id = idService.getConceptNid(id);
+            id = Get.identifierService().getConceptNid(id);
         }
         ObservableSememeChronology osc = observableSememeMap.get(id);
         if (osc != null) {
@@ -106,6 +104,11 @@ public class ObservableChronologyProvider
     }
 
     @Override
+    public void handleCommit(CommitRecord commitRecord) {
+        // TODO figure out what to do... Only effect is to change commit time...
+    }
+
+    @Override
     public void handleChange(ConceptChronology<? extends StampedVersion> cc) {
         ObservableConceptChronology occ = observableConceptMap.get(cc.getNid());
         if (occ != null) {
@@ -114,7 +117,7 @@ public class ObservableChronologyProvider
     }
 
     @Override
-    public void handleChange(SememeChronology<? extends SememeVersion> sc) {
+    public void handleChange(SememeChronology<? extends SememeVersion<?>> sc) {
         ObservableSememeChronology osc = observableSememeMap.get(sc.getNid());
         if (osc != null) {
             osc.handleChange(sc);
@@ -127,7 +130,7 @@ public class ObservableChronologyProvider
         // handle referenced component 
         // Concept, description, or sememe
         ObjectChronologyType oct
-                = idService.getChronologyTypeForNid(sc.getReferencedComponentNid());
+                = Get.identifierService().getChronologyTypeForNid(sc.getReferencedComponentNid());
         ChronologyChangeListener referencedComponent = null;
         switch (oct) {
             case CONCEPT:
@@ -135,7 +138,7 @@ public class ObservableChronologyProvider
                 break;
             case REFEX:
                 referencedComponent = 
-                        observableConceptMap.get(idService.getConceptNidForDescriptionNid(sc.getReferencedComponentNid()));
+                        observableConceptMap.get(Get.identifierService().getConceptNidForDescriptionNid(sc.getReferencedComponentNid()));
                 break;
             case SEMEME:
                 referencedComponent = observableSememeMap.get(sc.getReferencedComponentNid());
