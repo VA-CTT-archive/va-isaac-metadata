@@ -54,40 +54,40 @@ import org.jvnet.hk2.annotations.Service;
 public class CoordinateFactoryProvider implements CoordinateFactory {
 
     @Override
-    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, int year, int month, int dayOfMonth, int hour, int minute, int second) {
+    public StampCoordinate<StampCoordinateImpl> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, int year, int month, int dayOfMonth, int hour, int minute, int second) {
         StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.of(year, month, dayOfMonth, hour, minute, second).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
         return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, TemporalAccessor temporal) {
+    public StampCoordinate<StampCoordinateImpl> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, TemporalAccessor temporal) {
         StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.from(temporal).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
         return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, CharSequence dateTimeText) {
+    public StampCoordinate<StampCoordinateImpl> createStampCoordinate(ConceptSpecification stampPath, StampPrecedence precedence, List<ConceptSpecification> moduleSpecificationList, EnumSet<State> allowedStateSet, CharSequence dateTimeText) {
         StampPositionImpl stampPosition = new StampPositionImpl(LocalDateTime.parse(dateTimeText).toEpochSecond(ZoneOffset.UTC), stampPath.getConceptSequence());
         return new StampCoordinateImpl(precedence, stampPosition, moduleSpecificationList, allowedStateSet);
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createDevelopmentLatestStampCoordinate() {
+    public StampCoordinate<StampCoordinateImpl> createDevelopmentLatestStampCoordinate() {
         return StampCoordinates.getDevelopmentLatest();
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createDevelopmentLatestActiveOnlyStampCoordinate() {
+    public StampCoordinate<StampCoordinateImpl> createDevelopmentLatestActiveOnlyStampCoordinate() {
         return StampCoordinates.getDevelopmentLatestActiveOnly();
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createMasterLatestStampCoordinate() {
+    public StampCoordinate<StampCoordinateImpl> createMasterLatestStampCoordinate() {
         return StampCoordinates.getMasterLatest();
     }
 
     @Override
-    public StampCoordinate<StampCoordinate> createMasterLatestActiveOnlyStampCoordinate() {
+    public StampCoordinate<StampCoordinateImpl> createMasterLatestActiveOnlyStampCoordinate() {
         return StampCoordinates.getMasterLatestActiveOnly();
     }
 
@@ -97,12 +97,12 @@ public class CoordinateFactoryProvider implements CoordinateFactory {
     }
 
     @Override
-    public TaxonomyCoordinate<TaxonomyCoordinate> createInferredTaxonomyCoordinate(StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
+    public TaxonomyCoordinate<? extends TaxonomyCoordinate<?>> createInferredTaxonomyCoordinate(StampCoordinate<? extends StampCoordinate<?>> stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
         return TaxonomyCoordinates.getInferredTaxonomyCoordinate(stampCoordinate, languageCoordinate, logicCoordinate);
     }
 
     @Override
-    public TaxonomyCoordinate<TaxonomyCoordinate> createStatedTaxonomyCoordinate(StampCoordinate stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
+    public TaxonomyCoordinate<? extends TaxonomyCoordinate<?>> createStatedTaxonomyCoordinate(StampCoordinate<? extends StampCoordinate<?>> stampCoordinate, LanguageCoordinate languageCoordinate, LogicCoordinate logicCoordinate) {
         return TaxonomyCoordinates.getStatedTaxonomyCoordinate(stampCoordinate, languageCoordinate, logicCoordinate);
     }
  
@@ -171,7 +171,7 @@ public class CoordinateFactoryProvider implements CoordinateFactory {
     }
 
     @Override
-    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, List<C> descriptionList, LanguageCoordinate languageCoordinate) {
+    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate<? extends StampCoordinate<?>> stampCoordinate, List<C> descriptionList, LanguageCoordinate languageCoordinate) {
         for (int descType: languageCoordinate.getDescriptionTypePreferenceList()) {
             Optional<LatestVersion<V>>  match = getSpecifiedDescription(stampCoordinate, 
             descriptionList,  descType, languageCoordinate);
@@ -183,7 +183,7 @@ public class CoordinateFactoryProvider implements CoordinateFactory {
     }
     
     @Override
-    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate stampCoordinate, 
+    public <V extends DescriptionSememe<?>, C extends SememeChronology<V>> Optional<LatestVersion<V>> getSpecifiedDescription(StampCoordinate<? extends StampCoordinate<?>> stampCoordinate, 
             List<C> descriptionList, 
             int typeSequence, LanguageCoordinate languageCoordinate) {
         SememeSnapshotService<ComponentNidSememe> acceptabilitySnapshot = Get.sememeService().getSnapshot(ComponentNidSememe.class, stampCoordinate);
@@ -257,14 +257,14 @@ public class CoordinateFactoryProvider implements CoordinateFactory {
     }
 
     @Override
-    public TaxonomyCoordinate<TaxonomyCoordinate> createDefaultInferredTaxonomyCoordinate() {
+    public TaxonomyCoordinate<?> createDefaultInferredTaxonomyCoordinate() {
         return createInferredTaxonomyCoordinate(createDevelopmentLatestActiveOnlyStampCoordinate(), 
                 getUsEnglishLanguageFullySpecifiedNameCoordinate(), 
                 createStandardElProfileLogicCoordinate());
     }
 
     @Override
-    public TaxonomyCoordinate<TaxonomyCoordinate> createDefaultStatedTaxonomyCoordinate() {
+    public TaxonomyCoordinate<?> createDefaultStatedTaxonomyCoordinate() {
          return createStatedTaxonomyCoordinate(createDevelopmentLatestActiveOnlyStampCoordinate(), 
                 getUsEnglishLanguageFullySpecifiedNameCoordinate(), 
                 createStandardElProfileLogicCoordinate());
