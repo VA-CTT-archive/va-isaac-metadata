@@ -142,7 +142,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 popParent();
                 createConcept(DynamicSememeConstants.DYNAMIC_SEMEME_METADATA);
                 pushParent(current());
-                createConcept(DynamicSememeConstants.COLUMN_DATA_TYPES);
+                    createConcept(DynamicSememeConstants.COLUMN_DATA_TYPES);
                 popParent();
           popParent();
           //
