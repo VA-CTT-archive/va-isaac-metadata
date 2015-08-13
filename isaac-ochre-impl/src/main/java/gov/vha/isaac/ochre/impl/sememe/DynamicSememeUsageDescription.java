@@ -38,11 +38,13 @@ import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DynamicSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.SememeVersion;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeColumnInfo;
-import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeConstants;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeDataBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeDataType;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeUsageDescriptionBI;
 import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.DynamicSememeValidatorType;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeArrayBI;
+import gov.vha.isaac.ochre.api.component.sememe.version.dynamicSememe.dataTypes.DynamicSememeStringBI;
+import gov.vha.isaac.ochre.model.constants.IsaacMetadataConstants;
 
 /**
  *
@@ -93,31 +95,32 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 	 * @throws IOException 
 	 * @throws ContradictionException 
 	 */
+	@SuppressWarnings("unchecked")
 	public DynamicSememeUsageDescription(int refexUsageDescriptorSequence)
 	{
 		refexUsageDescriptorSequence_ = refexUsageDescriptorSequence;
 		TreeMap<Integer, DynamicSememeColumnInfo> allowedColumnInfo = new TreeMap<>();
 		ConceptChronology<?> assemblageConcept = Get.conceptService().getConcept(refexUsageDescriptorSequence_);
 		
-		for (SememeChronology descriptionSememe : assemblageConcept.getConceptDescriptionList())
+		for (@SuppressWarnings("rawtypes") SememeChronology descriptionSememe : assemblageConcept.getConceptDescriptionList())
 		{
 			if (descriptionSememe.getSememeType() == SememeType.DESCRIPTION)
 			{
+				@SuppressWarnings("rawtypes")
 				Optional<LatestVersion<? extends DescriptionSememe>> descriptionVersion 
 					= descriptionSememe.getLatestVersion(DescriptionSememe.class, StampCoordinates.getDevelopmentLatestActiveOnly());
 				
 				if (descriptionVersion.isPresent())
 				{
+					@SuppressWarnings("rawtypes")
 					DescriptionSememe ds = descriptionVersion.get().value();
 					
 					if (ds.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
 					{
-						boolean hasCorrectAnnotation = false;
 						Optional<SememeChronology<? extends SememeVersion<?>>> nestesdSememe = Get.sememeService().getSememesForComponentFromAssemblage(ds.getNid(), 
-								DynamicSememeConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence()).findAny();
+								IsaacMetadataConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence()).findAny();
 						if (nestesdSememe.isPresent())
 						{
-							hasCorrectAnnotation = true;
 							sememeUsageDescription_ = ds.getText();
 						};
 					}
@@ -145,15 +148,17 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 		{
 			if (sememe.getSememeType() == SememeType.DYNAMIC)
 			{
+				@SuppressWarnings("rawtypes")
 				Optional<LatestVersion<? extends DynamicSememe>> sememeVersion 
 					= ((SememeChronology)sememe).getLatestVersion(DynamicSememe.class, StampCoordinates.getDevelopmentLatestActiveOnly());
 				
 				if (sememeVersion.isPresent())
 				{
+					@SuppressWarnings("rawtypes")
 					DynamicSememe ds = sememeVersion.get().value();
 					DynamicSememeDataBI[] refexDefinitionData = ds.getData();
 					
-					if (sememe.getAssemblageSequence() == DynamicSememeConstants.DYNAMIC_SEMEME_EXTENSION_DEFINITION.getNid())
+					if (sememe.getAssemblageSequence() == IsaacMetadataConstants.DYNAMIC_SEMEME_EXTENSION_DEFINITION.getNid())
 					{
 						if (refexDefinitionData == null || refexDefinitionData.length < 3 || refexDefinitionData.length > 7)
 						{
@@ -166,7 +171,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 						//col 2 is the column data type, stored as a string.
 						//col 3 (if present) is the default column data, stored as a subtype of DynamicSememeDataBI
 						//col 4 (if present) is a boolean field noting whether the column is required (true) or optional (false or null)
-						//col 5 (if present) is the validator {@link DynamicSememeValidatorType}, stored as a string.
+						//col 5 (if present) is the validator {@link DynamicSememeValidatorType}, stored as a string array.
 						//col 6 (if present) is the validatorData for the validator in column 5, stored as a subtype of DynamicSememeDataBI
 						try
 						{
@@ -191,19 +196,45 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 								columnRequired = (refexDefinitionData[4] == null ? null : (Boolean)refexDefinitionData[4].getDataObject());
 							}
 							
-							DynamicSememeValidatorType validator = null;
-							DynamicSememeDataBI validatorData = null;
+							DynamicSememeValidatorType[] validators = null;
+							DynamicSememeDataBI[] validatorsData = null;
 							if (refexDefinitionData.length > 5)
 							{
-								validator = (refexDefinitionData[5] == null ? null : DynamicSememeValidatorType.valueOf((String)refexDefinitionData[5].getDataObject()));
+								if (refexDefinitionData[5] != null 
+										&& ((DynamicSememeArrayBI<DynamicSememeStringBI>)refexDefinitionData[5]).getDataArray().length > 0)
+								{
+									DynamicSememeArrayBI<DynamicSememeStringBI> readValidators = (DynamicSememeArrayBI<DynamicSememeStringBI>)refexDefinitionData[5];
+									validators = new DynamicSememeValidatorType[readValidators.getDataArray().length];
+									for (int i = 0; i < validators.length; i++)
+									{
+										validators[i] = DynamicSememeValidatorType.valueOf((String)readValidators.getDataArray()[i].getDataObject()); 
+									}
+								}
 								if (refexDefinitionData.length > 6)
 								{
-									validatorData = (refexDefinitionData[6] == null ? null : refexDefinitionData[6]);
+									if (refexDefinitionData[6] != null 
+											&& ((DynamicSememeArrayBI<? extends DynamicSememeDataBI>)refexDefinitionData[6]).getDataArray().length > 0)
+									{
+										DynamicSememeArrayBI<? extends DynamicSememeDataBI> readValidatorsData = 
+												(DynamicSememeArrayBI<? extends DynamicSememeDataBI>)refexDefinitionData[6];
+										validatorsData = new DynamicSememeDataBI[readValidatorsData.getDataArray().length];
+										for (int i = 0; i < validators.length; i++)
+										{
+											if (readValidatorsData.getDataArray()[i] != null)
+											{
+												validatorsData[i] = readValidatorsData.getDataArray()[i];
+											}
+											else
+											{
+												validatorsData[i] = null;
+											}
+										}
+									}
 								}
 							}
 							
 							allowedColumnInfo.put(column, new DynamicSememeColumnInfo(assemblageConcept.getPrimordialUuid(), column, descriptionUUID, type, 
-									defaultData, columnRequired, validator, validatorData));
+									defaultData, columnRequired, validators, validatorsData));
 						}
 						catch (Exception e)
 						{
@@ -212,12 +243,12 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 									+ "that is parseable as a DynamicSememeDataType");
 						}
 					}
-					else if (sememe.getAssemblageSequence() == DynamicSememeConstants.DYNAMIC_SEMEME_REFERENCED_COMPONENT_RESTRICTION.getSequence())
+					else if (sememe.getAssemblageSequence() == IsaacMetadataConstants.DYNAMIC_SEMEME_REFERENCED_COMPONENT_RESTRICTION.getSequence())
 					{
 						if (refexDefinitionData == null || refexDefinitionData.length < 1)
 						{
 							throw new RuntimeException("The Assemblage concept: " + assemblageConcept + " is not correctly assembled for use as an Assemblage for " 
-									+ "a DynamicSememeData Refex Type.  If it contains a " + DynamicSememeConstants.DYNAMIC_SEMEME_REFERENCED_COMPONENT_RESTRICTION.getFSN()
+									+ "a DynamicSememeData Refex Type.  If it contains a " + IsaacMetadataConstants.DYNAMIC_SEMEME_REFERENCED_COMPONENT_RESTRICTION.getFSN()
 									+ " then it must contain a single column of data, of type string, parseable as a " + ObjectChronologyType.class.getName());
 						}
 						
