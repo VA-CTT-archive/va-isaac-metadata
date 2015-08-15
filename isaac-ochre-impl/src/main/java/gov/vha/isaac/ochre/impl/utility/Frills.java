@@ -1,11 +1,14 @@
 package gov.vha.isaac.ochre.impl.utility;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
+import gov.vha.isaac.ochre.api.ConceptProxy;
 import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
@@ -135,5 +138,42 @@ public class Frills
 			return Optional.of(desc.get().value().getText());
 		}
 		else return Optional.empty();
+	}
+	
+	/**
+	 * Convenience method to extract the latest version of descriptions of the requested type
+	 * @param conceptNid The concept to read descriptions for
+	 * @param descriptionType expected to be one of {@link IsaacMetadataAuxiliaryBinding#SYNONYM} or 
+	 * {@link IsaacMetadataAuxiliaryBinding#FULLY_SPECIFIED_NAME} or {@link IsaacMetadataAuxiliaryBinding#DEFINITION_DESCRIPTION_TYPE}
+	 * @param stamp - optional - if not provided gets the default from the config service
+	 * @return the descriptions - may be empty, will not be null
+	 */
+	public static List<DescriptionSememe<?>> getDescriptionsOfType(int conceptNid, ConceptProxy descriptionType,
+			StampCoordinate<? extends StampCoordinate<?>> stamp)
+	{
+		ArrayList<DescriptionSememe<?>> results = new ArrayList<>();
+		Get.sememeService().getSememesForComponentFromAssemblage(conceptNid, IsaacMetadataAuxiliaryBinding.DESCRIPTION_ASSEMBLAGE.getConceptSequence())
+			.forEach(descriptionC -> 
+				{
+					if (descriptionC.getSememeType() == SememeType.DESCRIPTION)
+					{
+						@SuppressWarnings({ "unchecked", "rawtypes" })
+						Optional<LatestVersion<DescriptionSememe<?>>> latest = ((SememeChronology)descriptionC).getLatestVersion(DescriptionSememe.class, 
+								stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp);
+						if (latest.isPresent())
+						{
+							DescriptionSememe<?> ds = latest.get().value();
+							if (ds.getDescriptionTypeConceptSequence() == descriptionType.getConceptSequence())
+							{
+								results.add(ds);
+							}
+						}
+					}
+					else
+					{
+						log.warn("Description attached to concept nid {} is not of the expected type!", conceptNid);
+					}
+				});
+		return results;
 	}
 }
