@@ -184,7 +184,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 								defaultData = (refexDefinitionData[3] == null ? null : refexDefinitionData[3]);
 							}
 							
-							if (defaultData != null && type.getDynamicSememeMemberClass() != refexDefinitionData[3].getRefexDataType().getDynamicSememeMemberClass())
+							if (defaultData != null && type.getDynamicSememeMemberClass() != refexDefinitionData[3].getDynamicSememeDataType().getDynamicSememeMemberClass())
 							{
 								throw new IOException("The Assemblage concept: " + assemblageConcept + " is not correctly assembled for use as an Assemblage for " 
 									+ "a DynamicSememeData Refex Type.  The type of the column (column 3) must match the type of the defaultData (column 4)");
