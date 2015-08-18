@@ -17,7 +17,7 @@ import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
-import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
+import gov.vha.isaac.ochre.model.sememe.version.LongSememeImpl;
 
 public class Frills
 {
@@ -33,21 +33,13 @@ public class Frills
 	{
 		try
 		{
-			Optional<LatestVersion<StringSememeImpl>> sememe = Get.sememeService().getSnapshot(StringSememeImpl.class, 
+			Optional<LatestVersion<LongSememeImpl>> sememe = Get.sememeService().getSnapshot(LongSememeImpl.class, 
 					stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp)
 						.getLatestSememeVersionsForComponentFromAssemblage(componentNid, 
 								IsaacMetadataAuxiliaryBinding.SNOMED_INTEGER_ID.getConceptSequence()).findFirst();
 			if (sememe.isPresent())
 			{
-				String temp = sememe.get().value().getString();  //TODO why is this loaded as a string?
-				try
-				{
-					return Optional.of(Long.parseLong(temp));
-				}
-				catch (NumberFormatException e)
-				{
-					log.error("The found string '" + temp + "' isn't parseable as a long - as an SCTID should be - in nid " + componentNid);
-				}
+				return Optional.of(sememe.get().value().getLongValue());
 			}
 		}
 		catch (Exception e)
