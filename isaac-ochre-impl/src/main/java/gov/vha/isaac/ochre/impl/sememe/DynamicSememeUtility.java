@@ -56,6 +56,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Singleton;
 import org.jvnet.hk2.annotations.Service;
 /**
  * Copyright Notice
@@ -74,7 +75,6 @@ import org.jvnet.hk2.annotations.Service;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */import javax.inject.Singleton;
 
 /**
  * {@link DynamicSememeUtility}
@@ -215,14 +215,23 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 		definitionBuilder.setPreferredInDialectAssemblage(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
 		builder.addDescription(definitionBuilder);
 		
-		definitionBuilder = descriptionBuilderService.getDescriptionBuilder(sememeDescription, builder, IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE,
-				IsaacMetadataAuxiliaryBinding.ENGLISH);
-		definitionBuilder.setPreferredInDialectAssemblage(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
-		builder.addDescription(definitionBuilder);
-		
 		ConceptChronology<? extends ConceptVersion<?>> newCon = builder.build(EditCoordinates.getDefaultUserMetadata(), ChangeCheckerMode.ACTIVE, new ArrayList<>());
 		Get.commitService().addUncommitted(newCon);
 		
+		{
+			//Set up the dynamic sememe 'special' definition
+			definitionBuilder = descriptionBuilderService.getDescriptionBuilder(sememeDescription, builder, IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE,
+					IsaacMetadataAuxiliaryBinding.ENGLISH);
+			definitionBuilder.setPreferredInDialectAssemblage(IsaacMetadataAuxiliaryBinding.US_ENGLISH_DIALECT);
+			@SuppressWarnings("rawtypes")
+			SememeChronology definitonSememe = (SememeChronology) definitionBuilder.build(EditCoordinates.getDefaultUserMetadata(), ChangeCheckerMode.ACTIVE);
+			Get.commitService().addUncommitted(definitonSememe);
+			
+			SememeChronology<? extends SememeVersion<?>> sememe = Get.sememeBuilderService().getDyanmicSememeBuilder(definitonSememe.getNid(), 
+					IsaacMetadataConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence(), null).build(EditCoordinates.getDefaultUserMetadata(), ChangeCheckerMode.ACTIVE);
+			Get.commitService().addUncommitted(sememe);
+		}
+
 		if (columns != null)
 		{
 			//Ensure that we process in column order - we don't always keep track of that later - we depend on the data being stored in the right order.
