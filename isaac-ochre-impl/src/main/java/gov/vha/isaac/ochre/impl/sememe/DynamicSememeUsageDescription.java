@@ -115,7 +115,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 					@SuppressWarnings("rawtypes")
 					DescriptionSememe ds = descriptionVersion.get().value();
 					
-					if (ds.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
+					if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
 					{
 						Optional<SememeChronology<? extends SememeVersion<?>>> nestesdSememe = Get.sememeService().getSememesForComponentFromAssemblage(ds.getNid(), 
 								IsaacMetadataConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence()).findAny();
@@ -124,7 +124,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 							sememeUsageDescription_ = ds.getText();
 						};
 					}
-					if (ds.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
+					if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
 					{
 						name_ = ds.getText();
 					}
