@@ -29,7 +29,7 @@ public class Frills
 	 * @param stamp - optional - if not provided uses default from config service
 	 * @return the id, if found, or empty (will not return null)
 	 */
-	public static Optional<Long> getSctId(int componentNid, StampCoordinate<? extends StampCoordinate<?>> stamp)
+	public static Optional<Long> getSctId(int componentNid, StampCoordinate stamp)
 	{
 		try
 		{
@@ -56,7 +56,7 @@ public class Frills
 	 * @param stamp - optional - if not provided, uses default from config service
 	 * @throws RuntimeException If there is unexpected data (incorrectly) attached to the sememe
 	 */
-	public static boolean isDescriptionPreferred(int descriptionSememeNid, StampCoordinate<? extends StampCoordinate<?>> stamp) throws RuntimeException
+	public static boolean isDescriptionPreferred(int descriptionSememeNid, StampCoordinate stamp) throws RuntimeException
 	{
 		AtomicReference<Boolean> answer = new AtomicReference<>();
 		
@@ -113,7 +113,7 @@ public class Frills
 	 * @return the text of the description, if found
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Optional<String> getPreferredTermForConceptNid(int nid, StampCoordinate<? extends StampCoordinate<?>> stamp)
+	public static Optional<String> getPreferredTermForConceptNid(int nid, StampCoordinate stamp)
 	{
 		SememeSnapshotService<DescriptionSememe> ss = Get.sememeService().getSnapshot(DescriptionSememe.class, 
 				stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp); 
@@ -145,7 +145,7 @@ public class Frills
 	 * @return the descriptions - may be empty, will not be null
 	 */
 	public static List<DescriptionSememe<?>> getDescriptionsOfType(int conceptNid, ConceptProxy descriptionType,
-			StampCoordinate<? extends StampCoordinate<?>> stamp)
+			StampCoordinate stamp)
 	{
 		ArrayList<DescriptionSememe<?>> results = new ArrayList<>();
 		Get.sememeService().getSememesForComponentFromAssemblage(conceptNid, IsaacMetadataAuxiliaryBinding.DESCRIPTION_ASSEMBLAGE.getConceptSequence())

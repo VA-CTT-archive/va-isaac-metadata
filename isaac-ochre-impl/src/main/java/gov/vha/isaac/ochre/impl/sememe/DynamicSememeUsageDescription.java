@@ -102,38 +102,35 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 		TreeMap<Integer, DynamicSememeColumnInfo> allowedColumnInfo = new TreeMap<>();
 		ConceptChronology<?> assemblageConcept = Get.conceptService().getConcept(refexUsageDescriptorSequence_);
 		
-		for (@SuppressWarnings("rawtypes") SememeChronology descriptionSememe : assemblageConcept.getConceptDescriptionList())
+		for (SememeChronology<? extends DescriptionSememe<?>> descriptionSememe : assemblageConcept.getConceptDescriptionList())
 		{
-			if (descriptionSememe.getSememeType() == SememeType.DESCRIPTION)
+			@SuppressWarnings("rawtypes")
+			Optional<LatestVersion<DescriptionSememe<?>>> descriptionVersion = ((SememeChronology)descriptionSememe)
+					.getLatestVersion(DescriptionSememe.class, StampCoordinates.getDevelopmentLatestActiveOnly());
+			
+			if (descriptionVersion.isPresent())
 			{
 				@SuppressWarnings("rawtypes")
-				Optional<LatestVersion<? extends DescriptionSememe>> descriptionVersion 
-					= descriptionSememe.getLatestVersion(DescriptionSememe.class, StampCoordinates.getDevelopmentLatestActiveOnly());
+				DescriptionSememe ds = descriptionVersion.get().value();
 				
-				if (descriptionVersion.isPresent())
+				if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
 				{
-					@SuppressWarnings("rawtypes")
-					DescriptionSememe ds = descriptionVersion.get().value();
-					
-					if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
+					Optional<SememeChronology<? extends SememeVersion<?>>> nestesdSememe = Get.sememeService().getSememesForComponentFromAssemblage(ds.getNid(), 
+							IsaacMetadataConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence()).findAny();
+					if (nestesdSememe.isPresent())
 					{
-						Optional<SememeChronology<? extends SememeVersion<?>>> nestesdSememe = Get.sememeService().getSememesForComponentFromAssemblage(ds.getNid(), 
-								IsaacMetadataConstants.DYNAMIC_SEMEME_DEFINITION_DESCRIPTION.getSequence()).findAny();
-						if (nestesdSememe.isPresent())
-						{
-							sememeUsageDescription_ = ds.getText();
-						};
-					}
-					if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
-					{
-						name_ = ds.getText();
-					}
-					if (sememeUsageDescription_ != null && name_ != null)
-					{
-						break;
-					}
-					
+						sememeUsageDescription_ = ds.getText();
+					};
 				}
+				if (ds.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
+				{
+					name_ = ds.getText();
+				}
+				if (sememeUsageDescription_ != null && name_ != null)
+				{
+					break;
+				}
+				
 			}
 		}
 

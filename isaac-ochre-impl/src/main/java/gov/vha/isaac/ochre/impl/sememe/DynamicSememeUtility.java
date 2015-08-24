@@ -395,7 +395,7 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 		try
 		{
 			ConceptChronology<? extends ConceptVersion<?>> cc = Get.conceptService().getConcept(columnDescriptionConcept);
-			for (@SuppressWarnings("rawtypes") SememeChronology dc : cc.getConceptDescriptionList())
+			for (SememeChronology<? extends DescriptionSememe<?>> dc : cc.getConceptDescriptionList())
 			{
 				if (columnName != null && columnDescription != null)
 				{
@@ -403,8 +403,8 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 				}
 				
 				@SuppressWarnings("rawtypes")
-				Optional<LatestVersion<DescriptionSememe>> descriptionVersion = 
-						dc.getLatestVersion(DescriptionSememe.class, Get.configurationService().getDefaultStampCoordinate());
+				Optional<LatestVersion<DescriptionSememe<?>>> descriptionVersion = ((SememeChronology)dc)
+						.getLatestVersion(DescriptionSememe.class, Get.configurationService().getDefaultStampCoordinate());
 				
 				if (descriptionVersion.isPresent())
 				{

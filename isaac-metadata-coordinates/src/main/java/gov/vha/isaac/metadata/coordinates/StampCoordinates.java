@@ -29,25 +29,25 @@ import gov.vha.isaac.ochre.model.coordinate.StampPositionImpl;
  * @author kec
  */
 public class StampCoordinates {
-    public static StampCoordinate<StampCoordinateImpl> getDevelopmentLatest() {
+    public static StampCoordinate getDevelopmentLatest() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
                 IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
                 ConceptSequenceSet.EMPTY, State.ANY_STATE_SET);
     }
-    public static StampCoordinate<StampCoordinateImpl> getDevelopmentLatestActiveOnly() {
+    public static StampCoordinate getDevelopmentLatestActiveOnly() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
                 IsaacMetadataAuxiliaryBinding.DEVELOPMENT.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
                 ConceptSequenceSet.EMPTY, State.ACTIVE_ONLY_SET);
     }
-    public static StampCoordinate<StampCoordinateImpl> getMasterLatest() {
+    public static StampCoordinate getMasterLatest() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
                 IsaacMetadataAuxiliaryBinding.MASTER.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
                 ConceptSequenceSet.EMPTY, State.ANY_STATE_SET);
     }
-    public static StampCoordinate<StampCoordinateImpl> getMasterLatestActiveOnly() {
+    public static StampCoordinate getMasterLatestActiveOnly() {
         StampPosition stampPosition = new StampPositionImpl(Long.MAX_VALUE, 
                 IsaacMetadataAuxiliaryBinding.MASTER.getConceptSequence());
         return new StampCoordinateImpl(StampPrecedence.PATH, stampPosition, 
