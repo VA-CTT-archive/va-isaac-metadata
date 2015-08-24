@@ -158,7 +158,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 					DynamicSememe ds = sememeVersion.get().value();
 					DynamicSememeDataBI[] refexDefinitionData = ds.getData();
 					
-					if (sememe.getAssemblageSequence() == IsaacMetadataConstants.DYNAMIC_SEMEME_EXTENSION_DEFINITION.getNid())
+					if (sememe.getAssemblageSequence() == IsaacMetadataConstants.DYNAMIC_SEMEME_EXTENSION_DEFINITION.getSequence())
 					{
 						if (refexDefinitionData == null || refexDefinitionData.length < 3 || refexDefinitionData.length > 7)
 						{

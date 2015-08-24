@@ -51,7 +51,7 @@ public class Frills
 	
 	
 	/**
-	 * Determine if a particular description sememe is flagged as preferred.  Returns false if there is no acceptability sememe.
+	 * Determine if a particular description sememe is flagged as preferred IN ANY LANGUAGE.  Returns false if there is no acceptability sememe.
 	 * @param descriptionSememeNid
 	 * @param stamp - optional - if not provided, uses default from config service
 	 * @throws RuntimeException If there is unexpected data (incorrectly) attached to the sememe
@@ -60,8 +60,8 @@ public class Frills
 	{
 		AtomicReference<Boolean> answer = new AtomicReference<>();
 		
-		Get.sememeService().getSememesForComponentFromAssemblage(descriptionSememeNid, IsaacMetadataAuxiliaryBinding.DESCRIPTION_ACCEPTABILITY.getConceptSequence())
-			.forEach(nestedSememe ->
+		//Ignore the language annotation... treat preferred in any language as good enough for our purpose here...
+		Get.sememeService().getSememesForComponent(descriptionSememeNid).forEach(nestedSememe ->
 			{
 				if (nestedSememe.getSememeType() == SememeType.COMPONENT_NID)
 				{

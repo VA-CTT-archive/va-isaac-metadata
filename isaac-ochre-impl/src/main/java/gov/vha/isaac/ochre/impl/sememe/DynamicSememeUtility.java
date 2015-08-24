@@ -409,29 +409,13 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 				if (descriptionVersion.isPresent())
 				{
 					DescriptionSememe<?> d = descriptionVersion.get().value();
-					if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
+					if (d.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.FULLY_SPECIFIED_NAME.getConceptSequence())
 					{
 						fsn = d.getText();
 					}
-					else if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence())
+					else if (d.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence())
 					{
-						AtomicReference<Boolean> isPreferred = new AtomicReference<>();
-						Get.sememeService().getSememesForComponentFromAssemblage(d.getNid(), IsaacMetadataAuxiliaryBinding.DESCRIPTION_ACCEPTABILITY.getConceptSequence())
-							.forEach(nestedSememe ->
-						{
-							if (nestedSememe.getSememeType() == SememeType.COMPONENT_NID)
-							{
-								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.PREFERRED.getNid())
-								{
-									isPreferred.set(true);
-								}
-								if (((ComponentNidSememe<?>)nestedSememe).getComponentNid() == IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getNid())
-								{
-									isPreferred.set(false);
-								}
-							}
-						});
-						if (isPreferred.get() != null && isPreferred.get().booleanValue())
+						if (Frills.isDescriptionPreferred(d.getNid(), null))
 						{
 							columnName = d.getText();
 						}
@@ -440,7 +424,7 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 							acceptableSynonym = d.getText();
 						}
 					}
-					else if (d.getAssemblageSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
+					else if (d.getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.DEFINITION_DESCRIPTION_TYPE.getConceptSequence())
 					{
 						if (Frills.isDescriptionPreferred(d.getNid(), null))
 						{
