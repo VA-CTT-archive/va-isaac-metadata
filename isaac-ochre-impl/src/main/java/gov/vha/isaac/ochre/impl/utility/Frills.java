@@ -71,16 +71,20 @@ public class Frills
 					
 					if (latest.isPresent())
 					{
-						if (answer.get() != null)
-						{
-							throw new RuntimeException("multiple annotations about preferred status!");
-						}
 						if (latest.get().value().getComponentNid() == IsaacMetadataAuxiliaryBinding.PREFERRED.getNid())
 						{
+							if (answer.get() != null && answer.get() != true)
+							{
+								throw new RuntimeException("contradictory annotations about preferred status!");
+							}
 							answer.set(true);
 						}
 						else if (latest.get().value().getComponentNid() == IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getNid())
 						{
+							if (answer.get() != null && answer.get() != false)
+							{
+								throw new RuntimeException("contradictory annotations about preferred status!");
+							}
 							answer.set(false);
 						}
 						else
