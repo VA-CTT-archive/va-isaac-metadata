@@ -1,23 +1,21 @@
 package gov.vha.isaac.ochre.impl.utility;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import gov.vha.isaac.ochre.api.ConceptProxy;
 import gov.vha.isaac.ochre.api.Get;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
-import gov.vha.isaac.ochre.api.component.sememe.SememeSnapshotService;
 import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
 import gov.vha.isaac.ochre.model.sememe.version.LongSememeImpl;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Frills
 {
@@ -105,35 +103,6 @@ public class Frills
 			return false;
 		}
 		return answer.get();
-	}
-	
-	/**
-	 * @param nid concept nid (must be a nid)
-	 * @param stamp - optional (uses default from config service, if not provided)
-	 * @return the text of the description, if found
-	 */
-	@SuppressWarnings("rawtypes")
-	public static Optional<String> getPreferredTermForConceptNid(int nid, StampCoordinate stamp)
-	{
-		SememeSnapshotService<DescriptionSememe> ss = Get.sememeService().getSnapshot(DescriptionSememe.class, 
-				stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp); 
-		
-		Stream<LatestVersion<DescriptionSememe>> descriptions = ss.getLatestDescriptionVersionsForComponent(nid);
-		Optional<LatestVersion<DescriptionSememe>> desc = descriptions.filter((LatestVersion<DescriptionSememe> d) -> 
-		{
-			if (d.value().getDescriptionTypeConceptSequence() == IsaacMetadataAuxiliaryBinding.SYNONYM.getConceptSequence()
-					&& isDescriptionPreferred(d.value().getNid(), stamp)) 
-			{
-				return true;
-			}
-			return false;
-		}).findFirst();
-		
-		if (desc.isPresent())
-		{
-			return Optional.of(desc.get().value().getText());
-		}
-		else return Optional.empty();
 	}
 	
 	/**
