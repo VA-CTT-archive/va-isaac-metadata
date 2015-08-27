@@ -92,10 +92,6 @@ public class Frills
 						
 					}
 				}
-				else
-				{
-					throw new RuntimeException("Unexpected - sememe type should have been component on a description_acceptability sememe");
-				}
 			});
 		if (answer.get() == null)
 		{
