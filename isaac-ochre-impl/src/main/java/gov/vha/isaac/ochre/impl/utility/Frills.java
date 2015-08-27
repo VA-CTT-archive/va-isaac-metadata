@@ -9,7 +9,7 @@ import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
-import gov.vha.isaac.ochre.model.sememe.version.LongSememeImpl;
+import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +31,13 @@ public class Frills
 	{
 		try
 		{
-			Optional<LatestVersion<LongSememeImpl>> sememe = Get.sememeService().getSnapshot(LongSememeImpl.class, 
+			Optional<LatestVersion<StringSememeImpl>> sememe = Get.sememeService().getSnapshot(StringSememeImpl.class, 
 					stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp)
 						.getLatestSememeVersionsForComponentFromAssemblage(componentNid, 
 								IsaacMetadataAuxiliaryBinding.SNOMED_INTEGER_ID.getConceptSequence()).findFirst();
 			if (sememe.isPresent())
 			{
-				return Optional.of(sememe.get().value().getLongValue());
+				return Optional.of(Long.parseLong(sememe.get().value().getString()));
 			}
 		}
 		catch (Exception e)
