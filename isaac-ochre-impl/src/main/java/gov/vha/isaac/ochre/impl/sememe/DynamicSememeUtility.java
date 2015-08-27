@@ -267,7 +267,7 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 				
 				if (ci.getValidatorData() != null)
 				{
-					DynamicSememeDataBI[] validatorData = new DynamicSememeString[ci.getValidatorData().length];
+					DynamicSememeDataBI[] validatorData = new DynamicSememeDataBI[ci.getValidatorData().length];
 					for (int i = 0; i < validatorData.length; i++)
 					{
 						validatorData[i] = convertPolymorphicDataColumn(ci.getValidatorData()[i], ci.getValidatorData()[i].getDynamicSememeDataType());
