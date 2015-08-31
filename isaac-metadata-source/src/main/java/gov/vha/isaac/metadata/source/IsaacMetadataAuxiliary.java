@@ -64,6 +64,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             createConcept("module");
             pushParent(current());
                 createModuleConcept(moduleName).setComponentUuidNoRecompute(TermAux.ISAAC_MODULE.getPrimodialUuid());
+                createModuleConcept("SNOMED CT core module").setComponentUuidNoRecompute(Snomed.CORE_MODULE.getPrimodialUuid());
+                createModuleConcept("US Extension");
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
                 createModuleConcept("AMT");
