@@ -10,10 +10,14 @@ import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
 import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,6 +103,45 @@ public class Frills
 			return false;
 		}
 		return answer.get();
+	}
+	
+	/**
+	 * Returns a Map correlating each dialect sequence for a passed descriptionSememeId with its respective acceptability nid (preferred vs acceptable)
+	 * @param descriptionSememeNid
+	 * @param stamp - optional - if not provided, uses default from config service
+	 * @throws RuntimeException If there is inconsistent data (incorrectly) attached to the sememe
+	 */
+	public static Map<Integer, Integer> getAcceptabilities(int descriptionSememeNid, StampCoordinate stamp) throws RuntimeException
+	{
+		Map<Integer, Integer> dialectSequenceToAcceptabilityNidMap = new ConcurrentHashMap<>();
+		
+		Get.sememeService().getSememesForComponent(descriptionSememeNid).forEach(nestedSememe ->
+			{
+				if (nestedSememe.getSememeType() == SememeType.COMPONENT_NID)
+				{
+					int dialectSequence = nestedSememe.getAssemblageSequence();
+
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					Optional<LatestVersion<ComponentNidSememe>> latest = ((SememeChronology)nestedSememe).getLatestVersion(ComponentNidSememe.class, 
+							stamp == null ? Get.configurationService().getDefaultStampCoordinate() : stamp);
+					
+					if (latest.isPresent())
+					{
+						if (latest.get().value().getComponentNid() == IsaacMetadataAuxiliaryBinding.PREFERRED.getNid()
+								|| latest.get().value().getComponentNid() == IsaacMetadataAuxiliaryBinding.ACCEPTABLE.getNid()) {
+							if (dialectSequenceToAcceptabilityNidMap.get(dialectSequence) != null
+									&& dialectSequenceToAcceptabilityNidMap.get(dialectSequence) != latest.get().value().getComponentNid()) {
+								throw new RuntimeException("contradictory annotations about acceptability!");
+							} else {
+								dialectSequenceToAcceptabilityNidMap.put(dialectSequence, latest.get().value().getComponentNid());
+							}
+						} else {
+							throw new RuntimeException("Unexpected component nid!");
+						}
+					}
+				}
+			});
+		return dialectSequenceToAcceptabilityNidMap;
 	}
 	
 	/**
