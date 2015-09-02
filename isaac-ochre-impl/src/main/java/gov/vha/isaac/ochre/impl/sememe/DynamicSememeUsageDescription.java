@@ -70,7 +70,7 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 	public static DynamicSememeUsageDescription read(int assemblageNidOrSequence)
 	{
 		//TODO (artf231860) [REFEX] maybe? implement a mechanism to allow the cache to be updated... for now
-		//cache is uneditable, and may be wrong, if the user changes the definition of a dynamic refex.  Perhaps
+		//cache is uneditable, and may be wrong, if the user changes the definition of a dynamic sememe.  Perhaps
 		//implement a callback to clear the cache when we know a change of  a certain type happened instead?
 		
 		int sequence = Get.identifierService().getConceptSequence(assemblageNidOrSequence);
