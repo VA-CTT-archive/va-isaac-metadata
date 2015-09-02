@@ -461,7 +461,7 @@ public class DynamicSememeUtility implements DynamicSememeUtilityBI
 		
 		if (columnDescription == null)
 		{
-			Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No preferred or acceptable definition or acceptable synonym found on '" 
+			Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No preferred or acceptable definition or acceptable synonym found on '" 
 					+ columnDescriptionConcept + "' to use for the column description- re-using the the columnName, instead.");
 			columnDescription = columnName;
 		}

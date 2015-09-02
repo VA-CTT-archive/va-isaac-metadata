@@ -86,6 +86,54 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 	}
 	
 	/**
+	 * Invent DynamicSememeUsageDescription info for other sememe types (that aren't dynamic), otherwise, calls
+	 * {@link #read(int)} if it is a dynamic sememe
+	 * @param sememe the sememe in question
+	 */
+	public static DynamicSememeUsageDescription mockOrRead(SememeChronology<?> sememe)
+	{
+		DynamicSememeUsageDescription dsud = new DynamicSememeUsageDescription();
+		dsud.name_ = Get.conceptDescriptionText(sememe.getAssemblageSequence());
+		dsud.referencedComponentTypeRestriction_ = null;
+		dsud.referencedComponentTypeSubRestriction_ = null;
+		dsud.refexUsageDescriptorSequence_ = sememe.getAssemblageSequence();
+		dsud.sememeUsageDescription_ = "-";
+		
+		switch (sememe.getSememeType())
+		{
+			case COMPONENT_NID:
+				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {new DynamicSememeColumnInfo(
+						Get.identifierService().getUuidPrimordialFromConceptSequence(sememe.getAssemblageSequence()).get(), 
+						0, IsaacMetadataAuxiliaryBinding.NID.getPrimodialUuid(), DynamicSememeDataType.NID, null, true, null, null)};
+				break;
+			case LONG:
+				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {new DynamicSememeColumnInfo(
+						Get.identifierService().getUuidPrimordialFromConceptSequence(sememe.getAssemblageSequence()).get(), 
+						0, IsaacMetadataAuxiliaryBinding.LONG.getPrimodialUuid(), DynamicSememeDataType.LONG, null, true, null, null)};
+				break;
+			case DESCRIPTION:
+			case STRING:
+			case LOGIC_GRAPH:
+			case MEMBER:
+				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {new DynamicSememeColumnInfo(
+						Get.identifierService().getUuidPrimordialFromConceptSequence(sememe.getAssemblageSequence()).get(), 
+						0, IsaacMetadataAuxiliaryBinding.STRING.getPrimodialUuid(), DynamicSememeDataType.STRING, null, true, null, null)};
+				break;
+			case DYNAMIC:
+				return read(sememe.getAssemblageSequence());
+			case UNKNOWN:
+			default :
+				throw new RuntimeException("Use case not yet supported");
+		}
+		return dsud;
+	}
+	
+	private DynamicSememeUsageDescription()
+	{
+		//For use by the mock static method
+	}
+	
+	/**
 	 * Read the RefexUsageDescription data from the database for a given nid.
 	 * 
 	 * Note that most users should call {@link #read(int)} instead, as that utilizes a cache.
