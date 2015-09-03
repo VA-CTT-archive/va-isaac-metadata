@@ -136,10 +136,6 @@ public class ObservableChronologyProvider
             case CONCEPT:
                 referencedComponent = observableConceptMap.get(sc.getReferencedComponentNid());
                 break;
-            case REFEX:
-                referencedComponent = 
-                        observableConceptMap.get(Get.identifierService().getConceptNidForDescriptionNid(sc.getReferencedComponentNid()));
-                break;
             case SEMEME:
                 referencedComponent = observableSememeMap.get(sc.getReferencedComponentNid());
                 break;

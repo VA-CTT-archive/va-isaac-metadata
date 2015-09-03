@@ -6,18 +6,15 @@
 package gov.vha.isaac.metadata.source;
 
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import gov.vha.isaac.ochre.api.logic.NodeSemantic;
+import gov.vha.isaac.ochre.model.constants.InformationModelsConstants;
+import gov.vha.isaac.ochre.model.constants.IsaacMetadataConstants;
 import static gov.vha.isaac.ochre.observable.model.ObservableFields.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import org.ihtsdo.otf.tcc.api.lang.LanguageCode;
-import org.ihtsdo.otf.tcc.api.metadata.binding.RefexDynamic;
 import org.ihtsdo.otf.tcc.api.metadata.binding.Taxonomies;
 import org.ihtsdo.otf.tcc.api.metadata.binding.TermAux;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -67,6 +64,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             createConcept("module");
             pushParent(current());
                 createModuleConcept(moduleName).setComponentUuidNoRecompute(TermAux.ISAAC_MODULE.getPrimodialUuid());
+                createModuleConcept("SNOMED CT core module").setComponentUuidNoRecompute(Snomed.CORE_MODULE.getPrimodialUuid());
+                createModuleConcept("US Extension");
                 createModuleConcept("LOINC");
                 createModuleConcept("RxNorm");
                 createModuleConcept("AMT");
@@ -134,12 +133,15 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     pathOrigins.setComponentUuidNoRecompute(TermAux.PATH_ORIGIN_REFSET.getUuids()[0]);
                     //addPathOrigin(pathOrigins, developmentPath, masterPath);
                 popParent();
-                createConcept(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_ASSEMBLAGES.getPrimodialUuid());
+                createConcept(IsaacMetadataConstants.DYNAMIC_SEMEME_ASSEMBLAGES);
                 pushParent(current());
                     createConcept("description source type reference sets");  //Dynamic Sememes are created under this node for LOINC and RxNorm description types
                     createConcept("relationship source type reference sets"); //Dynamic Sememes are created under this node for LOINC and RxNorm relationship types
                 popParent();
-                createConcept(RefexDynamic.DYNAMIC_SEMEME_METADATA.getFsn()).setComponentUuidNoRecompute(RefexDynamic.DYNAMIC_SEMEME_METADATA.getPrimodialUuid());
+                createConcept(IsaacMetadataConstants.DYNAMIC_SEMEME_METADATA);
+                pushParent(current());
+                    createConcept(IsaacMetadataConstants.COLUMN_DATA_TYPES);
+                popParent();
           popParent();
           //
             createConcept("axiom origin");
@@ -185,6 +187,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 ConceptCB isa = createConcept("is-a");
                 isa.setComponentUuidNoRecompute(Snomed.IS_A.getUuids()[0]);
                 isa.addExtraUuid(TermAux.IS_A.getUuids()[0], GENERATED_UUID.getUuids()[0]);
+                createConcept(InformationModelsConstants.HAS_TERMINOLOGY_CONCEPT);  //TODO this should probably be redone as an association 
+                //using the association sememe / framework
             popParent();
             createConcept("connective operator");
             pushParent(current());
@@ -321,6 +325,8 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("concept properties");
                 pushParent(current());
                     createConcept(DESCRIPTION_LIST_FOR_CONCEPT);
+                popParent();
+                createConcept(InformationModelsConstants.INFORMATION_MODELS);
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
