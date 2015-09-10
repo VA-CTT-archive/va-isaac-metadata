@@ -3,21 +3,22 @@ package gov.vha.isaac.ochre.impl.utility;
 import gov.vha.isaac.metadata.source.IsaacMetadataAuxiliaryBinding;
 import gov.vha.isaac.ochre.api.ConceptProxy;
 import gov.vha.isaac.ochre.api.Get;
+import gov.vha.isaac.ochre.api.LookupService;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
 import gov.vha.isaac.ochre.api.component.sememe.version.DescriptionSememe;
 import gov.vha.isaac.ochre.api.coordinate.StampCoordinate;
+import gov.vha.isaac.ochre.api.index.IndexServiceBI;
+import gov.vha.isaac.ochre.api.index.SearchResult;
 import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -179,5 +180,25 @@ public class Frills
 					}
 				});
 		return results;
+	}
+	
+	public static Optional<Integer> getNidForSCTID(long sctID)
+	{
+		IndexServiceBI si = LookupService.get().getService(IndexServiceBI.class, "sememe indexer");
+		if (si != null)
+		{
+			//force the prefix algorithm, and add a trailing space - quickest way to do an exact-match type of search
+			List<SearchResult> result = si.query(sctID + " ", true, 
+					IsaacMetadataAuxiliaryBinding.SNOMED_INTEGER_ID.getConceptSequence(), 5, Long.MIN_VALUE);
+			if (result.size() > 0)
+			{
+				return Optional.of(Get.sememeService().getSememe(result.get(0).getNid()).getReferencedComponentNid());
+			}
+		}
+		else
+		{
+			log.warn("Sememe Index not available - can't lookup SCTID");
+		}
+		return Optional.empty();
 	}
 }
