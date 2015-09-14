@@ -92,7 +92,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("generated UUID").setComponentUuidNoRecompute(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
             popParent();
             createConcept("language");
-            pushParent(current());
+            pushParent(current());  //TODO - Keith, should these use the UUIDs from Snomed (where possible)?
                 createConcept("English");
                 createConcept("Spanish");
                 createConcept("French");
