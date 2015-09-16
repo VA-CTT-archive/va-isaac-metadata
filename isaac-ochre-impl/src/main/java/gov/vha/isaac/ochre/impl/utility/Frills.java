@@ -10,6 +10,7 @@ import gov.vha.isaac.ochre.api.State;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.chronicle.ObjectChronology;
 import gov.vha.isaac.ochre.api.chronicle.StampedVersion;
+import gov.vha.isaac.ochre.api.component.concept.ConceptChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
@@ -20,6 +21,7 @@ import gov.vha.isaac.ochre.api.index.SearchResult;
 import gov.vha.isaac.ochre.collections.ConceptSequenceSet;
 import gov.vha.isaac.ochre.model.coordinate.StampCoordinateImpl;
 import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -31,12 +33,24 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Frills
 {
 	private static Logger log = LogManager.getLogger();
+	
+	/**
+	 * 
+	 * Determine if Chronology has nested sememes
+	 * 
+	 * @param chronology
+	 * @return
+	 */
+	public static boolean hasNestedSememe(ObjectChronology<?> chronology) {
+		return !chronology.getSememeList().isEmpty();
+	}
 	
 	/**
 	 * Find the SCTID for a component (if it has one)
