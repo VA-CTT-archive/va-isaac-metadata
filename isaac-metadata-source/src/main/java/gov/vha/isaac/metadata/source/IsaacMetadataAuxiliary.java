@@ -90,6 +90,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             pushParent(current());
                 createConcept("SNOMED integer id").setComponentUuidNoRecompute(UUID.fromString("0418a591-f75b-39ad-be2c-3ab849326da9"));     
                 createConcept("generated UUID").setComponentUuidNoRecompute(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
+                createConcept("LOINC Num");
             popParent();
             createConcept("language");
             pushParent(current());  //TODO - Keith, should these use the UUIDs from Snomed (where possible)?
@@ -169,6 +170,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("definition description type").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
             createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
+                pushParent(current());
+                    createConcept("loinc consumer name");
+                    createConcept("loinc short name");
+                    createConcept("loinc long common name");
+                    createConcept("loinc definition description");
+                popParent();
             createConcept("description case significance");  
             pushParent(current());
                 createConcept("initial case IS significant");
@@ -327,6 +334,15 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept(DESCRIPTION_LIST_FOR_CONCEPT);
                 popParent();
                 createConcept(InformationModelsConstants.INFORMATION_MODELS);
+                
+                createConcept("solor metadata");
+                pushParent(current());
+                    createConcept("Content Release Date");
+                    createConcept("Content Source Version");
+                    createConcept("Loader Version");
+                    createConcept("Artifact Version");
+                popParent();
+                
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
