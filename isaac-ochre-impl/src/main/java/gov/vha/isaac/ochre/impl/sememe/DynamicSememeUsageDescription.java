@@ -134,10 +134,12 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 			case DESCRIPTION:
 			case STRING:
 			case LOGIC_GRAPH:
-			case MEMBER:
 				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {new DynamicSememeColumnInfo(
 						Get.identifierService().getUuidPrimordialFromConceptSequence(sememe.getAssemblageSequence()).get(), 
 						0, IsaacMetadataAuxiliaryBinding.STRING.getPrimodialUuid(), DynamicSememeDataType.STRING, null, true, null, null)};
+				break;
+			case MEMBER:
+				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {};
 				break;
 			case DYNAMIC:
 				return read(sememe.getAssemblageSequence());
