@@ -4,7 +4,7 @@
     <parent>
         <groupId>gov.vha.isaac</groupId>
         <artifactId>isaac-parent</artifactId>
-        <version>1.10-SNAPSHOT</version>
+        <version>1.10</version>
     </parent>
     <groupId>gov.vha.isaac.isaac-metadata</groupId>
     <artifactId>isaac-metadata-parent</artifactId>
@@ -17,7 +17,7 @@
     </scm>
 
     <properties>
-        <ochre.version>2.33-SNAPSHOT</ochre.version>
+        <ochre.version>2.33</ochre.version>
     </properties>
 
     <dependencyManagement>
