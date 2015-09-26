@@ -263,10 +263,7 @@ public enum LanguageCode {
 
     // UUID of concept corresponding to LanguageCode
     private final UUID conceptUuid;
-    
-    // hash of UUID to LanguageCode
-    private final static Map<UUID, LanguageCode> UUID_TO_LANGUAGECODE_MAP = new ConcurrentHashMap<>();
-    
+        
     private LanguageCode() {
     	this((UUID)null);
     }
@@ -319,27 +316,18 @@ public enum LanguageCode {
         return LanguageCode.valueOf(result);
     }
 
-    // Lazily initialize hash of UUID to LanguageCode and return LanguageCode for respective UUID.
     // Does not throw IllegalArgumentException if uncorrelated UUID passed
     public static LanguageCode safeValueOf(UUID uuid) {
     	if (uuid == null)
     		throw new NullPointerException("UUID is null");
-    	
-    	if (! UUID_TO_LANGUAGECODE_MAP.containsKey(uuid)) {
-    		for (LanguageCode code : values()) {
-    			if (code.conceptUuid != null && code.conceptUuid.equals(uuid)) {
-    				UUID_TO_LANGUAGECODE_MAP.put(uuid, code);
-    				return code;
-    			}
+    	for (LanguageCode code : values()) {
+    		if (code.conceptUuid != null && code.conceptUuid.equals(uuid)) {
+    			return code;
     		}
-    		UUID_TO_LANGUAGECODE_MAP.put(uuid, null);
-    	} else if (UUID_TO_LANGUAGECODE_MAP.get(uuid) != null) {
-    		return UUID_TO_LANGUAGECODE_MAP.get(uuid);
     	}
-    	
+
     	return null;
     }
-    // Lazily initialize hash of UUID to LanguageCode and return LanguageCode for respective UUID.
     // Throws IllegalArgumentException if uncorrelated UUID passed
     public static LanguageCode valueOf(UUID uuid) {
     	LanguageCode code = safeValueOf(uuid);

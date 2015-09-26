@@ -67,6 +67,26 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 	private static LRUDynamicSememeDescriptorCache<Integer, DynamicSememeUsageDescription> cache_ = 
 			new LRUDynamicSememeDescriptorCache<Integer, DynamicSememeUsageDescription>(25);
 
+	/**
+	 * 
+	 * Test if dyn sememe
+	 * 
+	 * @param assemblageNidOrSequence
+	 * @return
+	 */
+	public static boolean isDynamicSememe(int assemblageNidOrSequence) {
+		if (assemblageNidOrSequence >= 0 || Get.identifierService().getChronologyTypeForNid(assemblageNidOrSequence) == ObjectChronologyType.CONCEPT) {
+			try { 
+				read(assemblageNidOrSequence);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	public static DynamicSememeUsageDescription read(int assemblageNidOrSequence)
 	{
 		//TODO (artf231860) [REFEX] maybe? implement a mechanism to allow the cache to be updated... for now
@@ -114,10 +134,12 @@ public class DynamicSememeUsageDescription implements DynamicSememeUsageDescript
 			case DESCRIPTION:
 			case STRING:
 			case LOGIC_GRAPH:
-			case MEMBER:
 				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {new DynamicSememeColumnInfo(
 						Get.identifierService().getUuidPrimordialFromConceptSequence(sememe.getAssemblageSequence()).get(), 
 						0, IsaacMetadataAuxiliaryBinding.STRING.getPrimodialUuid(), DynamicSememeDataType.STRING, null, true, null, null)};
+				break;
+			case MEMBER:
+				dsud.refexColumnInfo_ = new DynamicSememeColumnInfo[] {};
 				break;
 			case DYNAMIC:
 				return read(sememe.getAssemblageSequence());

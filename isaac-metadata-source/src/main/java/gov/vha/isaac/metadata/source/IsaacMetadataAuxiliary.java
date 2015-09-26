@@ -90,9 +90,11 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             pushParent(current());
                 createConcept("SNOMED integer id").setComponentUuidNoRecompute(UUID.fromString("0418a591-f75b-39ad-be2c-3ab849326da9"));     
                 createConcept("generated UUID").setComponentUuidNoRecompute(UUID.fromString("2faa9262-8fb2-11db-b606-0800200c9a66"));     
+                createConcept("LOINC Num");
+                createConcept("RXCUI").setComponentUuidNoRecompute(UUID.fromString("617761d2-80ef-5585-83a0-60851dd44158"));  //comes from the algorithm in the rxnorm econ loader
             popParent();
             createConcept("language");
-            pushParent(current());
+            pushParent(current());  //TODO - Keith, should these use the UUIDs from Snomed (where possible)?
                 createConcept("English");
                 createConcept("Spanish");
                 createConcept("French");
@@ -102,7 +104,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("Lithuanian");
                 createConcept("Chinese");
                 createConcept("Japanese");
-                createConcept("Swedish");                
+                createConcept("Swedish");
             popParent();
             createConcept("assemblage membership type");
             pushParent(current());
@@ -154,8 +156,6 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 inferred.addExtraUuid(TermAux.REL_INFERED_CHAR.getUuids()[0], GENERATED_UUID.getUuids()[0]);
             popParent();
           //
-         //
-         //
             createConcept("description type");
             pushParent(current());
                 ConceptCB fsn = createConcept("fully specified name");
@@ -169,6 +169,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("definition description type").setComponentUuidNoRecompute(Snomed.DEFINITION_DESCRIPTION_TYPE.getUuids()[0]);
             popParent();
             createConcept("description type in source terminology");  //LOINC and RxNorm description types are created under this node
+                pushParent(current());
+                    createConcept("loinc consumer name");
+                    createConcept("loinc short name");
+                    createConcept("loinc long common name");
+                    createConcept("loinc definition description");
+                popParent();
             createConcept("description case significance");  
             pushParent(current());
                 createConcept("initial case IS significant");
@@ -180,7 +186,7 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("preferred").setComponentUuidNoRecompute(SnomedMetadataRf2.PREFERRED_RF2.getUuids()[0]);
             popParent();
             
-            createConcept("relationship type in source terminology");  //LOINC and RxNorm relationship types are created under this node
+            createConcept("relationship type in source terminology");  //RxNorm relationship types are created under this node
          
             createConcept("taxonomy operator");
             pushParent(current());
@@ -251,6 +257,9 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 createConcept("ConDOR");
             popParent();
             createConcept("role").setComponentUuidNoRecompute(Taxonomies.SNOMED_ROLE_ROOT.getUuids()[0]);
+                pushParent(current());
+                createConcept("Has strength");
+                popParent();
             pushParent(current());
                 createConcept("intrinsic role");
                 pushParent(current());
@@ -302,12 +311,12 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                     createConcept(PATH_SEQUENCE_FOR_VERSION);
                     createConcept(COMMITTED_STATE_FOR_VERSION);
                     createConcept(STAMP_SEQUENCE_FOR_VERSION);
-                    createConcept("description version properties");               
+                    createConcept("description version properties");
                     pushParent(current());
-                        createConcept(CASE_SIGNIFICANCE_CONCEPT_SEQUENCE_FOR_DESCRIPTION);               
-                        createConcept(LANGUAGE_CONCEPT_SEQUENCE_FOR_DESCRIPTION);               
-                        createConcept(TEXT_FOR_DESCRIPTION);               
-                        createConcept(DESCRIPTION_TYPE_FOR_DESCRIPTION);               
+                        createConcept(CASE_SIGNIFICANCE_CONCEPT_SEQUENCE_FOR_DESCRIPTION);
+                        createConcept(LANGUAGE_CONCEPT_SEQUENCE_FOR_DESCRIPTION);
+                        createConcept(TEXT_FOR_DESCRIPTION);
+                        createConcept(DESCRIPTION_TYPE_FOR_DESCRIPTION);
                     popParent();
                 popParent();
                 createConcept("chronicle properties");
@@ -326,7 +335,16 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
                 pushParent(current());
                     createConcept(DESCRIPTION_LIST_FOR_CONCEPT);
                 popParent();
-                createConcept(InformationModelsConstants.INFORMATION_MODELS);
+            popParent();
+            createConcept(InformationModelsConstants.INFORMATION_MODELS);
+            createConcept("solor metadata");
+            pushParent(current());
+                createConcept("Content Release Date");
+                createConcept("Content Source Version");
+                createConcept("Loader Version");
+                createConcept("Artifact Version");
+            popParent();
+                
       } catch (Exception ex) {
          Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
       }
@@ -358,6 +376,4 @@ public class IsaacMetadataAuxiliary extends Taxonomy {
             Logger.getLogger(IsaacMetadataAuxiliary.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-
 }
