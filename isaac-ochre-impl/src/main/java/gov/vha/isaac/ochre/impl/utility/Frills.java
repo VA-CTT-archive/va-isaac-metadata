@@ -10,7 +10,6 @@ import gov.vha.isaac.ochre.api.State;
 import gov.vha.isaac.ochre.api.chronicle.LatestVersion;
 import gov.vha.isaac.ochre.api.chronicle.ObjectChronology;
 import gov.vha.isaac.ochre.api.chronicle.StampedVersion;
-import gov.vha.isaac.ochre.api.component.concept.ConceptChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeChronology;
 import gov.vha.isaac.ochre.api.component.sememe.SememeType;
 import gov.vha.isaac.ochre.api.component.sememe.version.ComponentNidSememe;
@@ -21,7 +20,6 @@ import gov.vha.isaac.ochre.api.index.SearchResult;
 import gov.vha.isaac.ochre.collections.ConceptSequenceSet;
 import gov.vha.isaac.ochre.model.coordinate.StampCoordinateImpl;
 import gov.vha.isaac.ochre.model.sememe.version.StringSememeImpl;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -33,7 +31,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -275,5 +272,14 @@ public class Frills
 				moduleSequenceSet, allowedStates);
 		
 		return newStampCoordinate;
+	}
+	
+	public static void refreshIndexes()
+	{
+		LookupService.get().getAllServiceHandles(IndexServiceBI.class).forEach(index ->
+		{
+			//Making a query, with long.maxValue, causes the index to refresh itself, and look at the latest updates, if there have been updates.
+			index.getService().query("hi", null, 1, Long.MAX_VALUE);
+		});
 	}
 }
