@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>gov.vha.isaac.isaac-metadata</groupId>
-        <artifactId>isaac-metadata-parent</artifactId>
+        <artifactId>va-isaac-metadata</artifactId>
         <version>1.38-SNAPSHOT</version>
     </parent>
 
